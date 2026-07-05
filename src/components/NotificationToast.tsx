@@ -1,0 +1,108 @@
+import { useEffect, useState } from 'react';
+import { CountryConfig } from '../data/countries';
+
+interface NotificationToastProps {
+  country: CountryConfig;
+  lang?: 'fr' | 'en' | 'es';
+}
+
+const NotificationToast = ({ country, lang = 'fr' }: NotificationToastProps) => {
+  const [visible, setVisible] = useState(false);
+  const names = country.cities.flatMap((city) =>
+    country.testimonialNames.map((name) => ({ name, location: city }))
+  );
+  const [currentName, setCurrentName] = useState(names[0]);
+
+  // Couleurs personnalisées selon le pays
+  const getColors = () => {
+    switch (country.code) {
+      case 'pe':
+        return {
+          iconGradient: 'from-[#D91023] to-[#fcd116]',
+          checkColor: 'text-[#D91023]',
+          textColor: 'text-gray-900',
+          locationColor: 'text-gray-600',
+          timeColor: 'text-[#D91023]',
+        };
+      case 'mx':
+        return {
+          iconGradient: 'from-[#006341] to-[#CE1126]',
+          checkColor: 'text-[#006341]',
+          textColor: 'text-gray-900',
+          locationColor: 'text-gray-600',
+          timeColor: 'text-[#006341]',
+        };
+      default:
+        return {
+          iconGradient: 'from-[#fcd116] to-[#ef2b2d]',
+          checkColor: 'text-[#fcd116]',
+          textColor: 'text-gray-900',
+          locationColor: 'text-gray-600',
+          timeColor: 'text-green-600',
+        };
+    }
+  };
+
+  const colors = getColors();
+
+  // Textes dynamiques selon la langue
+  const getTimeText = () => {
+    const texts = {
+      fr: 'Vient de s\'inscrire • Il y a quelques instants',
+      en: 'Just joined • A few moments ago',
+      es: 'Acaba de inscribirse • Hace unos momentos',
+    };
+    return texts[lang] || texts.fr;
+  };
+
+  useEffect(() => {
+    const showNotification = () => {
+      const randomName = names[Math.floor(Math.random() * names.length)];
+      setCurrentName(randomName);
+      setVisible(true);
+
+      setTimeout(() => {
+        setVisible(false);
+      }, 4200);
+    };
+
+    const initialTimer = setTimeout(showNotification, 2500);
+
+    const interval = setInterval(() => {
+      showNotification();
+    }, Math.random() * 5000 + 7000);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(interval);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [country.code]);
+
+  return (
+    <div
+      className={`fixed bottom-6 left-6 bg-white text-gray-900 rounded-2xl shadow-2xl p-4 max-w-sm z-[999] transition-all duration-500 hidden sm:block ${
+        visible ? 'translate-x-0 opacity-100 scale-100' : '-translate-x-full opacity-0 scale-95'
+      }`}
+    >
+      <div className="flex items-center gap-3">
+        <div className={`w-12 h-12 bg-gradient-to-br ${colors.iconGradient} rounded-full flex items-center justify-center text-2xl animate-pulse text-white`}>
+          ✓
+        </div>
+        <div className="flex-1">
+          <div className={`font-bold text-sm ${colors.textColor}`}>
+            {currentName.name}
+          </div>
+          <div className={`text-xs ${colors.locationColor}`}>
+            {currentName.location}
+          </div>
+          <div className={`text-xs ${colors.timeColor} mt-1 font-medium`}>
+            {getTimeText()}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default NotificationToast;
