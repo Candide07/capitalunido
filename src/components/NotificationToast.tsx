@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { CountryConfig } from '../data/countries';
+import { Lang } from '../data/translations';
 
 interface NotificationToastProps {
   country: CountryConfig;
-  lang?: 'fr' | 'en' | 'es';
+  lang: Lang;
 }
 
 const NotificationToast = ({ country, lang = 'fr' }: NotificationToastProps) => {
@@ -12,6 +13,15 @@ const NotificationToast = ({ country, lang = 'fr' }: NotificationToastProps) => 
     country.testimonialNames.map((name) => ({ name, location: city }))
   );
   const [currentName, setCurrentName] = useState(names[0]);
+
+  // 📝 Traductions
+  const timeTexts = {
+    fr: 'Vient de s\'inscrire • Il y a quelques instants',
+    en: 'Just joined • A few moments ago',
+    es: 'Acaba de inscribirse • Hace unos momentos',
+  };
+
+  const timeText = timeTexts[lang] || timeTexts.fr;
 
   // Couleurs personnalisées selon le pays
   const getColors = () => {
@@ -44,16 +54,6 @@ const NotificationToast = ({ country, lang = 'fr' }: NotificationToastProps) => 
   };
 
   const colors = getColors();
-
-  // Textes dynamiques selon la langue
-  const getTimeText = () => {
-    const texts = {
-      fr: 'Vient de s\'inscrire • Il y a quelques instants',
-      en: 'Just joined • A few moments ago',
-      es: 'Acaba de inscribirse • Hace unos momentos',
-    };
-    return texts[lang] || texts.fr;
-  };
 
   useEffect(() => {
     const showNotification = () => {
@@ -97,7 +97,7 @@ const NotificationToast = ({ country, lang = 'fr' }: NotificationToastProps) => 
             {currentName.location}
           </div>
           <div className={`text-xs ${colors.timeColor} mt-1 font-medium`}>
-            {getTimeText()}
+            {timeText}
           </div>
         </div>
       </div>

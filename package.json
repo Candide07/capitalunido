@@ -11,8 +11,11 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.110.0",
     "clsx": "2.1.1",
+    "lucide-react": "^1.23.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
+    "react-router-dom": "^7.18.1",
+    "recharts": "^3.9.2",
     "tailwind-merge": "3.4.0"
   },
   "devDependencies": {
@@ -20,6 +23,7 @@
     "@types/node": "22.19.17",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
+    "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "5.1.1",
     "tailwindcss": "4.1.17",
     "typescript": "5.9.3",

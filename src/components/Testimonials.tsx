@@ -4,68 +4,72 @@ import { CountryConfig, BRAND_NAME } from '../data/countries';
 interface TestimonialsProps {
   t: Translation;
   country: CountryConfig;
+  lang: 'fr' | 'en' | 'es'; // 👈 NOUVEAU
 }
 
-const Testimonials = ({ t, country }: TestimonialsProps) => {
-  // Couleurs personnalisées selon le pays
+const Testimonials = ({ t, country, lang }: TestimonialsProps) => {
+  // Couleurs personnalisées selon le pays - VERSION CLAIRE
   const getColors = () => {
     switch (country.code) {
       case 'pe':
         return {
           titleGradient: 'from-[#D91023] to-[#fcd116]',
-          cardBg: 'from-white/10 to-white/5',
-          cardBorder: 'border-[#D91023]/30',
+          cardBg: 'bg-white/95 backdrop-blur-sm',
+          cardBorder: 'border-[#D91023]/20',
           cardHoverBorder: 'hover:border-[#D91023]',
-          cardShadow: 'hover:shadow-[#D91023]/30',
-          glowBg: 'from-[#D91023]/10',
+          cardShadow: 'shadow-lg hover:shadow-xl',
+          glowBg: 'from-[#D91023]/5',
           starsColor: 'text-[#D91023]',
-          checkBg: 'from-[#D91023]/20 to-[#D91023]/10',
-          checkBorder: 'border-[#D91023]/30',
+          checkBg: 'from-[#D91023]/10 to-[#D91023]/5',
+          checkBorder: 'border-[#D91023]/20',
           checkColor: 'text-[#D91023]',
           imgGlow: 'from-[#D91023] via-[#fcd116] to-[#D91023]',
-          imgBorder: 'border-[#D91023]/50',
+          imgBorder: 'border-[#D91023]/30',
           imgHoverBorder: 'group-hover:border-[#D91023]',
-          locationColor: 'text-[#D91023]/80',
-          textColor: 'text-white/90',
-          nameColor: 'text-white',
+          locationColor: 'text-gray-500',
+          textColor: 'text-gray-700',
+          nameColor: 'text-gray-900',
+          bgGradient: 'from-[#fdf6f0] via-[#fff5eb] to-[#fdf0e6]',
         };
       case 'mx':
         return {
           titleGradient: 'from-[#006341] to-[#CE1126]',
-          cardBg: 'from-white/10 to-white/5',
-          cardBorder: 'border-[#006341]/30',
+          cardBg: 'bg-white/95 backdrop-blur-sm',
+          cardBorder: 'border-[#006341]/20',
           cardHoverBorder: 'hover:border-[#006341]',
-          cardShadow: 'hover:shadow-[#006341]/30',
-          glowBg: 'from-[#006341]/10',
+          cardShadow: 'shadow-lg hover:shadow-xl',
+          glowBg: 'from-[#006341]/5',
           starsColor: 'text-[#006341]',
-          checkBg: 'from-[#006341]/20 to-[#006341]/10',
-          checkBorder: 'border-[#006341]/30',
+          checkBg: 'from-[#006341]/10 to-[#006341]/5',
+          checkBorder: 'border-[#006341]/20',
           checkColor: 'text-[#006341]',
           imgGlow: 'from-[#006341] via-[#CE1126] to-[#006341]',
-          imgBorder: 'border-[#006341]/50',
+          imgBorder: 'border-[#006341]/30',
           imgHoverBorder: 'group-hover:border-[#006341]',
-          locationColor: 'text-[#006341]/80',
-          textColor: 'text-white/90',
-          nameColor: 'text-white',
+          locationColor: 'text-gray-500',
+          textColor: 'text-gray-700',
+          nameColor: 'text-gray-900',
+          bgGradient: 'from-[#f0f7f0] via-[#f5faf5] to-[#e8f5e8]',
         };
       default:
         return {
           titleGradient: 'from-[#fcd116] to-[#ef2b2d]',
-          cardBg: 'from-white/10 to-white/5',
-          cardBorder: 'border-[#1a3c6e]/30',
+          cardBg: 'bg-white/95 backdrop-blur-sm',
+          cardBorder: 'border-[#1a3c6e]/20',
           cardHoverBorder: 'hover:border-[#fcd116]',
-          cardShadow: 'hover:shadow-[#fcd116]/30',
-          glowBg: 'from-[#fcd116]/10',
+          cardShadow: 'shadow-lg hover:shadow-xl',
+          glowBg: 'from-[#fcd116]/5',
           starsColor: 'text-[#fcd116]',
-          checkBg: 'from-[#009e49]/20 to-[#009e49]/10',
-          checkBorder: 'border-[#009e49]/30',
+          checkBg: 'from-[#009e49]/10 to-[#009e49]/5',
+          checkBorder: 'border-[#009e49]/20',
           checkColor: 'text-[#009e49]',
           imgGlow: 'from-[#ef2b2d] via-[#fcd116] to-[#009e49]',
-          imgBorder: 'border-[#fcd116]/50',
+          imgBorder: 'border-[#fcd116]/30',
           imgHoverBorder: 'group-hover:border-[#fcd116]',
-          locationColor: 'text-[#fcd116]/80',
-          textColor: 'text-white/90',
-          nameColor: 'text-white',
+          locationColor: 'text-gray-500',
+          textColor: 'text-gray-700',
+          nameColor: 'text-gray-900',
+          bgGradient: 'from-[#f8fafc] via-[#e6f0fa] to-[#f0f9ff]',
         };
     }
   };
@@ -200,25 +204,17 @@ const Testimonials = ({ t, country }: TestimonialsProps) => {
       ],
     };
 
-    // Choisir les témoignages selon le pays
     const testimonialData = country.code === 'pe' ? peTestimonials : mxTestimonials;
     
-    // Récupérer les témoignages dans la langue actuelle
-    const langMap: Record<string, 'fr' | 'en' | 'es'> = {
-      fr: 'fr',
-      en: 'en',
-      es: 'es',
-    };
-    const langKey = langMap[t.lang as string] || 'fr';
-    
-    return testimonialData[langKey] || testimonialData.fr;
+    // 👈 Utiliser la prop lang directement
+    return testimonialData[lang] || testimonialData.fr;
   };
 
   const testimonials = getTestimonials();
 
   return (
     <div className="mb-16">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 animate-fade-in-up text-white">
+      <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 animate-fade-in-up text-gray-900">
         {t.testimonials.title}{' '}
         <span className={`bg-gradient-to-r ${colors.titleGradient} bg-clip-text text-transparent`}>
           {t.testimonials.titleHighlight}
@@ -230,37 +226,38 @@ const Testimonials = ({ t, country }: TestimonialsProps) => {
         {testimonials.map((testimonial, index) => (
           <div
             key={index}
-            className={`group bg-gradient-to-br ${colors.cardBg} backdrop-blur-lg border-2 ${colors.cardBorder} rounded-3xl p-6 ${colors.cardHoverBorder} ${colors.cardShadow} transition-all duration-300 card-hover relative overflow-hidden animate-fade-in-up`}
+            className={`group ${colors.cardBg} border ${colors.cardBorder} rounded-2xl p-6 ${colors.cardShadow} transition-all duration-300 hover:scale-[1.02] relative overflow-hidden animate-fade-in-up`}
             style={{ animationDelay: `${index * 150}ms` }}
           >
-            <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${colors.glowBg} to-transparent rounded-bl-full`}></div>
+            <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${colors.glowBg} to-transparent rounded-bl-full opacity-50`}></div>
 
             <div className="relative">
               <div className="flex items-center justify-between mb-4">
-                <div className={`${colors.starsColor} text-xl group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`${colors.starsColor} text-xl`}>
                   ★★★★★
                 </div>
-                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${colors.checkBg} flex items-center justify-center border ${colors.checkBorder}`}>
-                  <span className={`text-lg ${colors.checkColor}`}>✓</span>
+                <div className={`w-8 h-8 rounded-full ${colors.checkBg} flex items-center justify-center border ${colors.checkBorder}`}>
+                  <span className={`text-sm ${colors.checkColor}`}>✓</span>
                 </div>
               </div>
 
-              <p className={`${colors.textColor} mb-6 leading-relaxed text-[15px]`}>
+              <p className={`${colors.textColor} mb-6 leading-relaxed text-[15px] italic`}>
                 "{testimonial.text}"
               </p>
 
-              <div className="flex items-center gap-4 pt-4 border-t border-white/10">
-                <div className="relative">
-                  <div className={`absolute inset-0 bg-gradient-to-r ${colors.imgGlow} rounded-full blur opacity-0 group-hover:opacity-70 transition-opacity`}></div>
+              <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
+                <div className="relative flex-shrink-0">
+                  <div className={`absolute inset-0 bg-gradient-to-r ${colors.imgGlow} rounded-full blur opacity-0 group-hover:opacity-40 transition-opacity`}></div>
                   <img
                     src={testimonial.img}
                     alt={testimonial.name}
-                    className={`relative w-12 h-12 rounded-full object-cover border-2 ${colors.imgBorder} ${colors.imgHoverBorder} transition-all shadow-lg`}
+                    className={`relative w-12 h-12 rounded-full object-cover border-2 ${colors.imgBorder} ${colors.imgHoverBorder} transition-all shadow-md`}
+                    loading="lazy"
                   />
                 </div>
                 <div>
-                  <div className={`font-bold ${colors.nameColor}`}>{testimonial.name}</div>
-                  <div className={`text-xs ${colors.locationColor} flex items-center gap-1`}>
+                  <div className={`font-semibold ${colors.nameColor}`}>{testimonial.name}</div>
+                  <div className={`text-sm ${colors.locationColor} flex items-center gap-1`}>
                     <span>📍</span>
                     {testimonial.location}
                   </div>

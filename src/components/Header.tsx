@@ -1,14 +1,55 @@
 import { Lang } from '../data/translations';
 import { CountryCode, countries, BRAND_NAME } from '../data/countries';
+import { useAuth } from '../context/AuthContext';
 
 interface HeaderProps {
   currentLang: Lang;
   onLangChange: (lang: Lang) => void;
   currentCountry: CountryCode;
   onCountryChange: (country: CountryCode) => void;
+  onLoginClick: () => void;
+  onDashboardClick?: () => void;
+  onRegisterClick?: () => void;
 }
 
-const Header = ({ currentLang, onLangChange, currentCountry, onCountryChange }: HeaderProps) => {
+const Header = ({ 
+  currentLang, 
+  onLangChange, 
+  currentCountry, 
+  onCountryChange,
+  onLoginClick,
+  onDashboardClick,
+  onRegisterClick
+}: HeaderProps) => {
+  const { user, signOut } = useAuth();
+
+  // 📝 Traductions du header - UNIFIÉES
+  const headerTexts = {
+    fr: { 
+      login: 'Connexion',
+      register: "S'inscrire",
+      loginShort: 'Se connecter',
+      dashboard: 'Tableau de bord', 
+      logout: 'Déconnexion',
+    },
+    en: { 
+      login: 'Login',
+      register: 'Sign up',
+      loginShort: 'Log in',
+      dashboard: 'Dashboard', 
+      logout: 'Logout',
+    },
+    es: { 
+      login: 'Iniciar sesión',
+      register: 'Registrarse',
+      loginShort: 'Iniciar sesión',
+      dashboard: 'Panel', 
+      logout: 'Cerrar sesión',
+    },
+  };
+
+  const t = headerTexts[currentLang] || headerTexts.fr;
+
   // Couleurs personnalisées selon le pays
   const getColors = () => {
     switch (currentCountry) {
@@ -22,6 +63,8 @@ const Header = ({ currentLang, onLangChange, currentCountry, onCountryChange }: 
           langActive: 'from-[#D91023] to-[#fcd116]',
           langActiveShadow: 'shadow-[#D91023]/50',
           countryActive: 'bg-[#D91023] text-white',
+          btnBg: 'bg-[#D91023] hover:bg-[#b8121e]',
+          btnBorder: 'border-[#D91023]',
         };
       case 'mx':
         return {
@@ -33,6 +76,8 @@ const Header = ({ currentLang, onLangChange, currentCountry, onCountryChange }: 
           langActive: 'from-[#006341] to-[#CE1126]',
           langActiveShadow: 'shadow-[#006341]/50',
           countryActive: 'bg-[#006341] text-white',
+          btnBg: 'bg-[#006341] hover:bg-[#004d32]',
+          btnBorder: 'border-[#006341]',
         };
       default:
         return {
@@ -44,17 +89,36 @@ const Header = ({ currentLang, onLangChange, currentCountry, onCountryChange }: 
           langActive: 'from-[#fcd116] to-[#ef2b2d]',
           langActiveShadow: 'shadow-[#fcd116]/50',
           countryActive: 'bg-white text-[#0a0f1c]',
+          btnBg: 'bg-[#1a3c6e] hover:bg-[#152f55]',
+          btnBorder: 'border-[#1a3c6e]',
         };
     }
   };
 
   const colors = getColors();
 
+  const handleSignOut = async () => {
+    await signOut();
+    window.location.href = '/';
+  };
+
+  const handleRegisterLogin = () => {
+    if (user) {
+      if (onDashboardClick) {
+        onDashboardClick();
+      }
+    } else {
+      if (onRegisterClick) {
+        onRegisterClick();
+      }
+    }
+  };
+
   return (
     <header className={`fixed top-1.5 left-0 right-0 bg-gradient-to-r ${colors.headerBg} backdrop-blur-xl z-[1000] border-b-2 ${colors.borderColor} shadow-lg ${colors.shadowColor}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-2">
         {/* Logo */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <a href="/" className="flex items-center gap-2 sm:gap-3 shrink-0">
           <div className={`w-9 h-9 sm:w-11 sm:h-11 bg-gradient-to-br ${colors.iconBg} rounded-2xl flex items-center justify-center text-xl sm:text-2xl shadow-lg relative overflow-hidden`}>
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
             <span className="relative z-10 filter drop-shadow-lg">💎</span>
@@ -62,7 +126,7 @@ const Header = ({ currentLang, onLangChange, currentCountry, onCountryChange }: 
           <div className={`text-lg sm:text-2xl font-black bg-gradient-to-r ${colors.logoGradient} bg-clip-text text-transparent tracking-tight`}>
             {BRAND_NAME}
           </div>
-        </div>
+        </a>
 
         <div className="flex flex-wrap gap-1 sm:gap-2 items-center">
           {/* Sélecteur pays */}
@@ -98,6 +162,35 @@ const Header = ({ currentLang, onLangChange, currentCountry, onCountryChange }: 
               </button>
             ))}
           </div>
+
+          {/* Bouton "S'inscrire/Se connecter" */}
+          {user ? (
+            <>
+              <button
+                onClick={onDashboardClick}
+                className="px-3 sm:px-5 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-bold bg-white/20 text-white hover:bg-white/30 border border-white/30 transition-all"
+              >
+                {t.dashboard}
+              </button>
+              <button
+                onClick={handleSignOut}
+                className="px-3 sm:px-5 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-bold bg-red-500/20 text-white hover:bg-red-500/30 border border-red-500/30 transition-all"
+              >
+                {t.logout}
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={handleRegisterLogin}
+              className={`px-4 sm:px-6 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-bold text-white ${colors.btnBg} border-2 ${colors.btnBorder} shadow-lg hover:scale-105 transition-all duration-200 flex items-center gap-2`}
+            >
+              <span className="text-base">👤</span>
+              <span className="hidden xs:inline">{t.register}</span>
+              <span className="hidden xs:inline text-white/50">/</span>
+              <span className="hidden sm:inline">{t.loginShort}</span>
+              <span className="xs:hidden">{t.register}</span>
+            </button>
+          )}
         </div>
       </div>
     </header>

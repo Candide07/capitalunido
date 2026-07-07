@@ -34,6 +34,7 @@ export interface CountryConfig {
     statsPaidMillions: number;
     statsSatisfaction: number;
     statsWithdrawals: number;
+    minDeposit: number; // ← AJOUTÉ
   };
 }
 
@@ -67,8 +68,8 @@ export const countries: Record<CountryCode, CountryConfig> = {
     amounts: {
       monthlyIncome: 'S/ 2,500',
       oldPrice: 'S/ 500',
-      newPrice: 'S/ 49',          // ~2.7% du salaire moyen (S/1,800)
-      premiumPrice: 'S/ 199',      // ~11% du salaire moyen
+      newPrice: 'S/ 49',
+      premiumPrice: 'S/ 199',
       dailyMin: 'S/ 35',
       dailyMax: 'S/ 95',
       savings: 'S/ 451',
@@ -79,6 +80,7 @@ export const countries: Record<CountryCode, CountryConfig> = {
       statsPaidMillions: 18,
       statsSatisfaction: 99,
       statsWithdrawals: 230,
+      minDeposit: 100, // ✅ Dépôt minimum Pérou
     },
   },
   mx: {
@@ -110,8 +112,8 @@ export const countries: Record<CountryCode, CountryConfig> = {
     amounts: {
       monthlyIncome: '$12,500',
       oldPrice: '$1,000',
-      newPrice: '$99',            // ~0.9% du salaire moyen ($10,500)
-      premiumPrice: '$399',        // ~3.8% du salaire moyen
+      newPrice: '$99',
+      premiumPrice: '$399',
       dailyMin: '$200',
       dailyMax: '$550',
       savings: '$901',
@@ -122,6 +124,7 @@ export const countries: Record<CountryCode, CountryConfig> = {
       statsPaidMillions: 72,
       statsSatisfaction: 99,
       statsWithdrawals: 230,
+      minDeposit: 650, // ✅ Dépôt minimum Mexique
     },
   },
 };

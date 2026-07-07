@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @layer utilities {
+  /* === ANIMATIONS EXISTANTES === */
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -20,10 +21,12 @@
       transform: translateY(-12px);
     }
   }
-@keyframes flagPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
-}
+  
+  @keyframes flagPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+  }
+  
   @keyframes shimmer {
     0% { opacity: 1; }
     50% { opacity: 0.7; }
@@ -41,6 +44,97 @@
     }
   }
 
+  /* === NOUVELLES ANIMATIONS === */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes shimmer-card {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* === UTILITAIRES D'ANIMATION === */
   .animate-fade-in-up {
     animation: fadeInUp 0.8s ease forwards;
   }
@@ -57,6 +151,68 @@
     animation: pulse-slow 1.5s ease-in-out infinite;
   }
 
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  .animate-slideIn {
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  .animate-slideDown {
+    animation: slideDown 0.3s ease-out forwards;
+  }
+
+  .animate-scaleIn {
+    animation: scaleIn 0.3s ease-out forwards;
+  }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 3s linear infinite;
+  }
+
+  .animate-gradient-shift {
+    animation: gradient-shift 3s ease infinite;
+    background-size: 200% 200%;
+  }
+
+  .animate-shimmer-card {
+    animation: shimmer-card 3s ease-in-out infinite;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    background-size: 200% 100%;
+  }
+
+  /* === DELAIS D'ANIMATION === */
+  .animation-delay-100 {
+    animation-delay: 0.1s;
+  }
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+  .animation-delay-300 {
+    animation-delay: 0.3s;
+  }
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  }
+  .animation-delay-500 {
+    animation-delay: 0.5s;
+  }
+  .animation-delay-1000 {
+    animation-delay: 1s;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  /* === CARTES ET INTERACTIONS === */
   .card-hover {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -64,10 +220,202 @@
   .card-hover:hover {
     transform: translateY(-12px) scale(1.03);
   }
+
+  /* === AMÉLIORATION DE LA LISIBILITÉ === */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .glass-effect-dark {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .text-shadow-xl {
+    text-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  /* === FOND AMÉLIORÉ === */
+  .bg-pattern {
+    background-image: 
+      radial-gradient(at 40% 20%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
+      radial-gradient(at 80% 80%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+      radial-gradient(at 20% 80%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
+  }
+
+  .bg-pattern-dots {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234A5568' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .bg-gradient-subtle {
+    background: linear-gradient(135deg, 
+      rgba(239, 246, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.9) 50%,
+      rgba(238, 242, 255, 0.8) 100%
+    );
+  }
+
+  /* === SCROLLBAR PERSONNALISÉE === */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #3b82f6, #6366f1);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #2563eb, #4f46e5);
+  }
+
+  /* === SELECTION TEXTE === */
+  ::selection {
+    background: rgba(59, 130, 246, 0.3);
+    color: #1a202c;
+  }
+
+  ::-moz-selection {
+    background: rgba(59, 130, 246, 0.3);
+    color: #1a202c;
+  }
+
+  /* === FOCUS VISIBLE === */
+  *:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+
+  /* === TRANSITIONS GLOBALES === */
+  * {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  /* ========================================
+     📱 BREAKPOINT PERSONNALISÉ xs
+     ======================================== */
+  @custom-media (min-width: 480px) {
+    .xs\:inline {
+      display: inline;
+    }
+    .xs\:hidden {
+      display: none;
+    }
+    .xs\:block {
+      display: block;
+    }
+    .xs\:flex {
+      display: flex;
+    }
+    .xs\:grid {
+      display: grid;
+    }
+    .xs\:text-base {
+      font-size: 1rem;
+    }
+    .xs\:text-lg {
+      font-size: 1.125rem;
+    }
+    .xs\:text-xl {
+      font-size: 1.25rem;
+    }
+    .xs\:px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .xs\:py-2 {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+  }
 }
 
+/* === STYLES DE BASE === */
 body {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, 
+    rgba(239, 246, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(238, 242, 255, 0.5) 100%
+  );
+  min-height: 100vh;
+  color: #1a202c;
+}
+
+/* === AMÉLIORATION DE LA LISIBILITÉ DU TEXTE === */
+.prose {
+  color: #1a202c;
+}
+
+.prose p {
+  color: #4a5568;
+  line-height: 1.75;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: #1a202c;
+  font-weight: 700;
+}
+
+/* === CARTES AVEC MEILLEUR CONTRASTE === */
+.card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.04);
+}
+
+.card-shadow:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 
+              0 4px 6px -2px rgba(0, 0, 0, 0.03);
+}
+
+.card-shadow-lg {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.02);
+}
+
+/* === INPUT FOCUS AMÉLIORÉ === */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+}
+
+/* === RESPONSIVE FONT SIZES === */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 640px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
 }

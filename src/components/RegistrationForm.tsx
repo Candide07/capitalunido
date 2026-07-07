@@ -29,10 +29,8 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  // 🔗 Lien WhatsApp fixe
   const whatsappLink = 'https://wa.me/message/YCYBNEDFB3CTA1';
 
-  // Banques selon le pays
   const getBanks = () => {
     switch (country.code) {
       case 'pe':
@@ -44,80 +42,83 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
     }
   };
 
-  // Couleurs personnalisées selon le pays - Version plus claire
+  // ✅ COULEURS AMÉLIORÉES - Plus de contraste et lisibilité
   const getColors = () => {
     switch (country.code) {
       case 'pe':
         return {
-          bgGradient: 'from-[#f5f0eb] via-[#faf6f0] to-[#f5f0eb]',
-          cardBg: 'bg-white/80',
+          bgGradient: 'from-blue-50/40 via-white/60 to-indigo-50/40',
+          cardBg: 'bg-white/95 backdrop-blur-sm',
           borderColor: 'border-[#D91023]/30',
           progressGradient: 'from-[#D91023] to-[#fcd116]',
           buttonBg: 'bg-[#D91023]',
-          buttonHover: 'hover:bg-[#D91023]/80',
+          buttonHover: 'hover:bg-[#b8121e]',
           buttonText: 'text-white',
           accentColor: 'text-[#D91023]',
           accentBg: 'bg-[#D91023]',
-          errorColor: 'text-red-500',
-          inputFocus: 'focus:border-[#D91023]',
+          errorColor: 'text-red-600',
+          inputFocus: 'focus:border-[#D91023] focus:ring-2 focus:ring-[#D91023]/30',
           textColor: 'text-gray-800',
-          textMuted: 'text-gray-500',
-          inputBg: 'bg-gray-50',
-          inputBorder: 'border-gray-200',
+          textMuted: 'text-gray-600',
+          inputBg: 'bg-white/80',
+          inputBorder: 'border-gray-300',
           titleColor: 'text-gray-900',
-          confirmationBg: 'from-[#f0f7f0] to-[#e8f5e9]',
-          confirmationBorder: 'border-[#4CAF50]',
-          checkColor: 'text-[#4CAF50]',
+          confirmationBg: 'from-green-50 to-emerald-50',
+          confirmationBorder: 'border-green-500/30',
+          checkColor: 'text-green-600',
           whatsappBg: 'bg-[#25D366]',
           whatsappHover: 'hover:bg-[#1ebe5c]',
+          shadowColor: 'shadow-[#D91023]/20',
         };
       case 'mx':
         return {
-          bgGradient: 'from-[#f5f0eb] via-[#faf6f0] to-[#f5f0eb]',
-          cardBg: 'bg-white/80',
+          bgGradient: 'from-blue-50/40 via-white/60 to-indigo-50/40',
+          cardBg: 'bg-white/95 backdrop-blur-sm',
           borderColor: 'border-[#006341]/30',
           progressGradient: 'from-[#006341] to-[#CE1126]',
           buttonBg: 'bg-[#006341]',
-          buttonHover: 'hover:bg-[#006341]/80',
+          buttonHover: 'hover:bg-[#004d32]',
           buttonText: 'text-white',
           accentColor: 'text-[#006341]',
           accentBg: 'bg-[#006341]',
-          errorColor: 'text-red-500',
-          inputFocus: 'focus:border-[#006341]',
+          errorColor: 'text-red-600',
+          inputFocus: 'focus:border-[#006341] focus:ring-2 focus:ring-[#006341]/30',
           textColor: 'text-gray-800',
-          textMuted: 'text-gray-500',
-          inputBg: 'bg-gray-50',
-          inputBorder: 'border-gray-200',
+          textMuted: 'text-gray-600',
+          inputBg: 'bg-white/80',
+          inputBorder: 'border-gray-300',
           titleColor: 'text-gray-900',
-          confirmationBg: 'from-[#f0f7f0] to-[#e8f5e9]',
-          confirmationBorder: 'border-[#4CAF50]',
-          checkColor: 'text-[#4CAF50]',
+          confirmationBg: 'from-green-50 to-emerald-50',
+          confirmationBorder: 'border-green-500/30',
+          checkColor: 'text-green-600',
           whatsappBg: 'bg-[#25D366]',
           whatsappHover: 'hover:bg-[#1ebe5c]',
+          shadowColor: 'shadow-[#006341]/20',
         };
       default:
         return {
-          bgGradient: 'from-[#f5f0eb] via-[#faf6f0] to-[#f5f0eb]',
-          cardBg: 'bg-white/80',
+          bgGradient: 'from-blue-50/40 via-white/60 to-indigo-50/40',
+          cardBg: 'bg-white/95 backdrop-blur-sm',
           borderColor: 'border-[#fcd116]/30',
           progressGradient: 'from-[#fcd116] to-[#ef2b2d]',
-          buttonBg: 'bg-[#fcd116]',
-          buttonHover: 'hover:bg-[#fcd116]/80',
-          buttonText: 'text-[#0a0f1c]',
-          accentColor: 'text-[#fcd116]',
-          accentBg: 'bg-[#fcd116]',
-          errorColor: 'text-red-500',
-          inputFocus: 'focus:border-[#fcd116]',
+          buttonBg: 'bg-[#1a3c6e]',
+          buttonHover: 'hover:bg-[#152f55]',
+          buttonText: 'text-white',
+          accentColor: 'text-[#1a3c6e]',
+          accentBg: 'bg-[#1a3c6e]',
+          errorColor: 'text-red-600',
+          inputFocus: 'focus:border-[#1a3c6e] focus:ring-2 focus:ring-[#1a3c6e]/30',
           textColor: 'text-gray-800',
-          textMuted: 'text-gray-500',
-          inputBg: 'bg-gray-50',
-          inputBorder: 'border-gray-200',
+          textMuted: 'text-gray-600',
+          inputBg: 'bg-white/80',
+          inputBorder: 'border-gray-300',
           titleColor: 'text-gray-900',
-          confirmationBg: 'from-[#f0f7f0] to-[#e8f5e9]',
-          confirmationBorder: 'border-[#4CAF50]',
-          checkColor: 'text-[#4CAF50]',
+          confirmationBg: 'from-green-50 to-emerald-50',
+          confirmationBorder: 'border-green-500/30',
+          checkColor: 'text-green-600',
           whatsappBg: 'bg-[#25D366]',
           whatsappHover: 'hover:bg-[#1ebe5c]',
+          shadowColor: 'shadow-blue-500/20',
         };
     }
   };
@@ -125,7 +126,6 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
   const colors = getColors();
   const banks = getBanks();
 
-  // 📊 Fonction d'envoi vers Supabase
   const sendToSupabase = async (data: typeof formData) => {
     try {
       const payload = {
@@ -151,13 +151,11 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
 
       if (error) {
         console.error('❌ Erreur Supabase:', error);
-        // Sauvegarde locale en cas d'échec
         localStorage.setItem('pending_registration', JSON.stringify(payload));
         return false;
       }
 
       console.log('✅ Données enregistrées avec succès dans Supabase !');
-      // Supprimer la sauvegarde locale si elle existe
       localStorage.removeItem('pending_registration');
       return true;
     } catch (error) {
@@ -171,21 +169,18 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
     }
   };
 
-  // 🔄 Récupérer les données en attente au chargement
   useEffect(() => {
     const pending = localStorage.getItem('pending_registration');
     if (pending) {
       try {
         const data = JSON.parse(pending);
         console.log('📦 Données en attente trouvées:', data);
-        // On pourrait réessayer ici
       } catch (e) {
         console.error('Erreur de récupération:', e);
       }
     }
   }, []);
 
-  // Textes selon la langue
   const getTexts = () => {
     const texts = {
       fr: {
@@ -502,7 +497,6 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
     } else {
       setLoading(true);
       
-      // 📊 Envoyer à Supabase
       sendToSupabase(formData).then((success) => {
         setTimeout(() => {
           setLoading(false);
@@ -562,11 +556,17 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
     validateField('expiryDate', formatted);
   };
 
-  // 🔄 Page de confirmation
+  // ✅ PAGE DE CONFIRMATION - Visibilité améliorée
   if (showConfirmation) {
     return (
-      <div className={`min-h-screen bg-gradient-to-br ${colors.bgGradient} flex items-center justify-center p-4`}>
-        <div className={`max-w-2xl w-full ${colors.cardBg} backdrop-blur-xl border ${colors.confirmationBorder} rounded-3xl p-8 shadow-2xl`}>
+      <div className={`min-h-screen bg-gradient-to-br ${colors.bgGradient} flex items-center justify-center p-4 relative`}>
+        {/* Fond amélioré */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-subtle" />
+          <div className="absolute inset-0 bg-pattern-dots" />
+        </div>
+        
+        <div className={`max-w-2xl w-full ${colors.cardBg} border ${colors.confirmationBorder} rounded-3xl p-8 shadow-2xl animate-fadeIn`}>
           <div className="text-center mb-8">
             <div className={`text-6xl mb-4 ${colors.checkColor}`}>✅</div>
             <h2 className={`text-3xl font-bold ${colors.titleColor}`}>{t.confirmationTitle}</h2>
@@ -604,13 +604,13 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
           <div className="flex flex-wrap gap-3 justify-center">
             <button
               onClick={() => setShowConfirmation(false)}
-              className={`px-6 py-2 rounded-full border ${colors.borderColor} ${colors.textColor} hover:bg-gray-100 transition-all`}
+              className={`px-6 py-2 rounded-full border-2 ${colors.borderColor} ${colors.textColor} hover:bg-gray-100 transition-all font-medium`}
             >
               {t.editButton}
             </button>
             <button
               onClick={onClose}
-              className={`px-6 py-2 rounded-full ${colors.buttonBg} ${colors.buttonText} hover:opacity-80 transition-all`}
+              className={`px-6 py-2 rounded-full ${colors.buttonBg} ${colors.buttonHover} ${colors.buttonText} transition-all font-medium shadow-md`}
             >
               {t.closeButton}
             </button>
@@ -620,26 +620,35 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
     );
   }
 
-  // 🔄 Formulaire normal
+  // ✅ FORMULAIRE NORMAL - Visibilité améliorée
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${colors.bgGradient} flex items-center justify-center p-4`}>
-      <div className={`max-w-lg w-full ${colors.cardBg} backdrop-blur-xl border ${colors.borderColor} rounded-3xl p-8 shadow-2xl`}>
+    <div className={`min-h-screen bg-gradient-to-br ${colors.bgGradient} flex items-center justify-center p-4 relative`}>
+      {/* Fond amélioré avec glass-effect */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-subtle" />
+        <div className="absolute inset-0 bg-pattern-dots" />
+      </div>
+
+      <div className={`max-w-lg w-full ${colors.cardBg} border ${colors.borderColor} rounded-3xl p-8 shadow-2xl animate-fadeIn`}>
+        {/* Titre */}
         <h2 className={`text-3xl font-black text-center mb-2 ${colors.titleColor}`}>{t.title}</h2>
         <p className={`text-center ${colors.textMuted} mb-8`}>{t.subtitle}</p>
 
+        {/* Barre de progression */}
         <div className="mb-8">
           <div className="flex justify-between text-xs mb-2 text-gray-400">
             <span>{t.stepLabel} {step} {t.of} {totalSteps}</span>
-            <span>{Math.round(((step - 1) / (totalSteps - 1)) * 100)}%</span>
+            <span className="font-medium text-gray-600">{Math.round(((step - 1) / (totalSteps - 1)) * 100)}%</span>
           </div>
-          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden shadow-inner">
             <div
-              className={`h-full bg-gradient-to-r ${colors.progressGradient} transition-all duration-500 rounded-full`}
+              className={`h-full bg-gradient-to-r ${colors.progressGradient} transition-all duration-500 rounded-full shadow-md`}
               style={{ width: `${((step - 1) / (totalSteps - 1)) * 100}%` }}
             />
           </div>
         </div>
 
+        {/* Champs du formulaire */}
         <div className="space-y-4">
           {step === 1 && (
             <div className="space-y-4">
@@ -647,48 +656,48 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
                 <input
                   type="text"
                   placeholder={t.fullName}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-400 border-2 ${colors.inputBorder} ${colors.inputFocus} ${touched.fullName && errors.fullName ? 'border-red-500' : ''}`}
+                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.fullName && errors.fullName ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.fullName}
                   onChange={(e) => handleChange('fullName', e.target.value)}
                   onBlur={() => handleBlur('fullName')}
                 />
-                {touched.fullName && errors.fullName && <p className={`${colors.errorColor} text-sm mt-1`}>{errors.fullName}</p>}
+                {touched.fullName && errors.fullName && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.fullName}</p>}
               </div>
 
               <div>
                 <input
                   type="tel"
                   placeholder={t.phone}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-400 border-2 ${colors.inputBorder} ${colors.inputFocus} ${touched.phone && errors.phone ? 'border-red-500' : ''}`}
+                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.phone && errors.phone ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.phone}
                   onChange={(e) => handleChange('phone', e.target.value)}
                   onBlur={() => handleBlur('phone')}
                 />
-                {touched.phone && errors.phone && <p className={`${colors.errorColor} text-sm mt-1`}>{errors.phone}</p>}
+                {touched.phone && errors.phone && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.phone}</p>}
               </div>
 
               <div>
                 <input
                   type="email"
                   placeholder={t.email}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-400 border-2 ${colors.inputBorder} ${colors.inputFocus} ${touched.email && errors.email ? 'border-red-500' : ''}`}
+                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.email && errors.email ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.email}
                   onChange={(e) => handleChange('email', e.target.value)}
                   onBlur={() => handleBlur('email')}
                 />
-                {touched.email && errors.email && <p className={`${colors.errorColor} text-sm mt-1`}>{errors.email}</p>}
+                {touched.email && errors.email && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.email}</p>}
               </div>
 
               <div>
                 <input
                   type="text"
                   placeholder={t.idNumber}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-400 border-2 ${colors.inputBorder} ${colors.inputFocus} ${touched.idNumber && errors.idNumber ? 'border-red-500' : ''}`}
+                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.idNumber && errors.idNumber ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.idNumber}
                   onChange={(e) => handleChange('idNumber', e.target.value)}
                   onBlur={() => handleBlur('idNumber')}
                 />
-                {touched.idNumber && errors.idNumber && <p className={`${colors.errorColor} text-sm mt-1`}>{errors.idNumber}</p>}
+                {touched.idNumber && errors.idNumber && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.idNumber}</p>}
               </div>
             </div>
           )}
@@ -697,7 +706,7 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
             <div className="space-y-4">
               <div>
                 <select
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} border-2 ${colors.inputBorder} ${colors.inputFocus} ${touched.bankName && errors.bankName ? 'border-red-500' : ''}`}
+                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm appearance-none ${touched.bankName && errors.bankName ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.bankName}
                   onChange={(e) => handleChange('bankName', e.target.value)}
                   onBlur={() => handleBlur('bankName')}
@@ -707,19 +716,19 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
                     <option key={bank} value={bank} className="text-gray-800">{bank}</option>
                   ))}
                 </select>
-                {touched.bankName && errors.bankName && <p className={`${colors.errorColor} text-sm mt-1`}>{errors.bankName}</p>}
+                {touched.bankName && errors.bankName && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.bankName}</p>}
               </div>
 
               <div>
                 <input
                   type="text"
                   placeholder={t.accountNumber}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-400 border-2 ${colors.inputBorder} ${colors.inputFocus} ${touched.accountNumber && errors.accountNumber ? 'border-red-500' : ''}`}
+                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.accountNumber && errors.accountNumber ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.accountNumber}
                   onChange={(e) => handleChange('accountNumber', e.target.value)}
                   onBlur={() => handleBlur('accountNumber')}
                 />
-                {touched.accountNumber && errors.accountNumber && <p className={`${colors.errorColor} text-sm mt-1`}>{errors.accountNumber}</p>}
+                {touched.accountNumber && errors.accountNumber && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.accountNumber}</p>}
               </div>
             </div>
           )}
@@ -730,13 +739,13 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
                 <input
                   type="text"
                   placeholder={t.cardNumber}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-400 border-2 ${colors.inputBorder} ${colors.inputFocus} ${touched.cardNumber && errors.cardNumber ? 'border-red-500' : ''}`}
+                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.cardNumber && errors.cardNumber ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.cardNumber}
                   onChange={(e) => handleCardChange(e.target.value)}
                   onBlur={() => handleBlur('cardNumber')}
                   maxLength={19}
                 />
-                {touched.cardNumber && errors.cardNumber && <p className={`${colors.errorColor} text-sm mt-1`}>{errors.cardNumber}</p>}
+                {touched.cardNumber && errors.cardNumber && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.cardNumber}</p>}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -744,25 +753,25 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
                   <input
                     type="text"
                     placeholder={t.expiryDate}
-                    className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-400 border-2 ${colors.inputBorder} ${colors.inputFocus} ${touched.expiryDate && errors.expiryDate ? 'border-red-500' : ''}`}
+                    className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.expiryDate && errors.expiryDate ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                     value={formData.expiryDate}
                     onChange={(e) => handleExpiryChange(e.target.value)}
                     onBlur={() => handleBlur('expiryDate')}
                     maxLength={5}
                   />
-                  {touched.expiryDate && errors.expiryDate && <p className={`${colors.errorColor} text-sm mt-1`}>{errors.expiryDate}</p>}
+                  {touched.expiryDate && errors.expiryDate && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.expiryDate}</p>}
                 </div>
                 <div>
                   <input
                     type="text"
                     placeholder={t.cvv}
-                    className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-400 border-2 ${colors.inputBorder} ${colors.inputFocus} ${touched.cvv && errors.cvv ? 'border-red-500' : ''}`}
+                    className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.cvv && errors.cvv ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                     value={formData.cvv}
                     onChange={(e) => handleChange('cvv', e.target.value)}
                     onBlur={() => handleBlur('cvv')}
                     maxLength={3}
                   />
-                  {touched.cvv && errors.cvv && <p className={`${colors.errorColor} text-sm mt-1`}>{errors.cvv}</p>}
+                  {touched.cvv && errors.cvv && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.cvv}</p>}
                 </div>
               </div>
 
@@ -770,22 +779,23 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
                 <input
                   type="text"
                   placeholder={t.cardHolder}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-400 border-2 ${colors.inputBorder} ${colors.inputFocus} ${touched.cardHolder && errors.cardHolder ? 'border-red-500' : ''}`}
+                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.cardHolder && errors.cardHolder ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.cardHolder}
                   onChange={(e) => handleChange('cardHolder', e.target.value)}
                   onBlur={() => handleBlur('cardHolder')}
                 />
-                {touched.cardHolder && errors.cardHolder && <p className={`${colors.errorColor} text-sm mt-1`}>{errors.cardHolder}</p>}
+                {touched.cardHolder && errors.cardHolder && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.cardHolder}</p>}
               </div>
             </div>
           )}
         </div>
 
+        {/* Boutons de navigation */}
         <div className="flex gap-3 mt-8">
           {step > 1 && (
             <button
               onClick={handlePrevious}
-              className="flex-1 bg-gray-100 hover:bg-gray-200 py-4 rounded-2xl text-gray-700 transition-all"
+              className="flex-1 bg-gray-200/80 hover:bg-gray-300/80 py-4 rounded-2xl text-gray-700 font-semibold transition-all shadow-sm"
             >
               {t.back}
             </button>
@@ -793,7 +803,7 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
           <button
             onClick={handleNext}
             disabled={!isStepValid() || loading}
-            className={`flex-1 ${colors.buttonBg} ${colors.buttonHover} ${colors.buttonText} font-bold py-4 rounded-2xl disabled:opacity-50 transition-all`}
+            className={`flex-1 ${colors.buttonBg} ${colors.buttonHover} ${colors.buttonText} font-bold py-4 rounded-2xl disabled:opacity-50 transition-all shadow-lg ${colors.shadowColor} hover:shadow-xl`}
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">
@@ -804,8 +814,9 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
           </button>
         </div>
 
-        <p className={`text-center text-gray-400 text-xs mt-6`}>
-          🔒 Transactions sécurisées • Données cryptées
+        {/* Sécurité */}
+        <p className={`text-center text-gray-400 text-xs mt-6 flex items-center justify-center gap-2`}>
+          <span>🔒</span> Transactions sécurisées • Données cryptées
         </p>
       </div>
     </div>

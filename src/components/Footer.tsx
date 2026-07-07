@@ -75,7 +75,6 @@ const Footer = ({ t, country }: FooterProps) => {
           {t.footer.line3}
         </p>
 
-        {/* Ajout du numéro de régulateur en bas */}
         {country.regulators.length > 0 && (
           <p className="text-xs text-white/20 mt-4">
             {country.label} • {country.regulators.map(r => `${r.name}: ${r.phone}`).join(' • ')}

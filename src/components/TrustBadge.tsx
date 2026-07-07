@@ -7,9 +7,21 @@ interface TrustBadgeProps {
 }
 
 const labels: Record<Lang, { verified: string; secure: string; protected: string }> = {
-  fr: { verified: 'Site vérifié', secure: 'Transactions sécurisées', protected: 'Protégé SSL' },
-  en: { verified: 'Verified site', secure: 'Secure transactions', protected: 'SSL protected' },
-  es: { verified: 'Sitio verificado', secure: 'Transacciones seguras', protected: 'Protegido SSL' },
+  fr: { 
+    verified: 'Site vérifié', 
+    secure: 'Transactions sécurisées', 
+    protected: 'Protégé SSL' 
+  },
+  en: { 
+    verified: 'Verified site', 
+    secure: 'Secure transactions', 
+    protected: 'SSL protected' 
+  },
+  es: { 
+    verified: 'Sitio verificado', 
+    secure: 'Transacciones seguras', 
+    protected: 'Protegido SSL' 
+  },
 };
 
 const TrustBadge = ({ lang, country }: TrustBadgeProps) => {
