@@ -12,29 +12,29 @@ const Footer = ({ t, country }: FooterProps) => {
     switch (country.code) {
       case 'pe':
         return {
-          logoGradient: 'from-[#D91023] to-[#fcd116]',
-          textGradient: 'from-white to-[#fcd116]',
-          badgeBorder: 'border-[#D91023]/40',
-          badgeText: 'text-[#D91023]',
-          badgeBg: 'bg-[#D91023]/10',
+          logoGradient: 'from-[#6b2737] to-[#c9a227]',
+          textGradient: 'from-white to-[#c9a227]',
+          badgeBorder: 'border-[#6b2737]/40',
+          badgeText: 'text-[#6b2737]',
+          badgeBg: 'bg-[#6b2737]/10',
           dividerBorder: 'border-white/10',
         };
       case 'mx':
         return {
-          logoGradient: 'from-[#006341] to-[#CE1126]',
+          logoGradient: 'from-[#2f6f4e] to-[#CE1126]',
           textGradient: 'from-white to-[#CE1126]',
-          badgeBorder: 'border-[#006341]/40',
-          badgeText: 'text-[#006341]',
-          badgeBg: 'bg-[#006341]/10',
+          badgeBorder: 'border-[#2f6f4e]/40',
+          badgeText: 'text-[#2f6f4e]',
+          badgeBg: 'bg-[#2f6f4e]/10',
           dividerBorder: 'border-white/10',
         };
       default:
         return {
-          logoGradient: 'from-[#fcd116] to-[#ef2b2d]',
-          textGradient: 'from-white to-[#fcd116]',
-          badgeBorder: 'border-[#fcd116]/40',
-          badgeText: 'text-[#fcd116]',
-          badgeBg: 'bg-[#fcd116]/10',
+          logoGradient: 'from-[#c9a227] to-[#ef2b2d]',
+          textGradient: 'from-white to-[#c9a227]',
+          badgeBorder: 'border-[#c9a227]/40',
+          badgeText: 'text-[#c9a227]',
+          badgeBg: 'bg-[#c9a227]/10',
           dividerBorder: 'border-white/10',
         };
     }

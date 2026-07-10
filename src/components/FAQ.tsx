@@ -17,30 +17,30 @@ const FAQ = ({ lang, country }: FAQProps) => {
     switch (country.code) {
       case 'pe':
         return {
-          gradientFrom: 'from-[#D91023]',
-          gradientTo: 'to-[#fcd116]',
-          borderColor: 'border-[#D91023]/30',
-          hoverBorder: 'hover:border-[#D91023]/50',
-          iconColor: 'text-[#D91023]',
-          bgGradient: 'from-[#D91023]/10',
+          gradientFrom: 'from-[#6b2737]',
+          gradientTo: 'to-[#c9a227]',
+          borderColor: 'border-[#6b2737]/30',
+          hoverBorder: 'hover:border-[#6b2737]/50',
+          iconColor: 'text-[#6b2737]',
+          bgGradient: 'from-[#6b2737]/10',
         };
       case 'mx':
         return {
-          gradientFrom: 'from-[#006341]',
+          gradientFrom: 'from-[#2f6f4e]',
           gradientTo: 'to-[#CE1126]',
-          borderColor: 'border-[#006341]/30',
-          hoverBorder: 'hover:border-[#006341]/50',
-          iconColor: 'text-[#006341]',
-          bgGradient: 'from-[#006341]/10',
+          borderColor: 'border-[#2f6f4e]/30',
+          hoverBorder: 'hover:border-[#2f6f4e]/50',
+          iconColor: 'text-[#2f6f4e]',
+          bgGradient: 'from-[#2f6f4e]/10',
         };
       default:
         return {
-          gradientFrom: 'from-[#fcd116]',
+          gradientFrom: 'from-[#c9a227]',
           gradientTo: 'to-[#ef2b2d]',
-          borderColor: 'border-[#fcd116]/30',
-          hoverBorder: 'hover:border-[#fcd116]/50',
-          iconColor: 'text-[#fcd116]',
-          bgGradient: 'from-[#fcd116]/10',
+          borderColor: 'border-[#c9a227]/30',
+          hoverBorder: 'hover:border-[#c9a227]/50',
+          iconColor: 'text-[#c9a227]',
+          bgGradient: 'from-[#c9a227]/10',
         };
     }
   };

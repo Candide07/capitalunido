@@ -1,5 +1,38 @@
 @import "tailwindcss";
 
+/* ============================================================
+   🎨 SYSTÈME DE DESIGN CAPITALUNIDO
+   Palette sobre et professionnelle (remplace les couleurs
+   "drapeau" utilisées précédemment un peu partout dans le code)
+   ============================================================ */
+@theme {
+  --color-ink: #1c2321;
+  --color-ink-muted: #4a4038;
+  --color-paper: #f7f4ef;
+  --color-paper-dark: #efe9df;
+
+  --color-brand: #6b2737;
+  --color-brand-dark: #4e1d29;
+  --color-brand-light: #8a3b4c;
+
+  --color-gold: #c9a227;
+  --color-gold-light: #e0c565;
+
+  --color-success: #2f6f4e;
+  --color-success-light: #dcece3;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Manrope", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* Utilitaires de police (au cas où le projet utiliserait encore
+   des classes Tailwind classiques plutôt que les tokens ci-dessus) */
+.font-display { font-family: var(--font-display); }
+.font-mono-data { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+
+
 @layer utilities {
   /* === ANIMATIONS EXISTANTES === */
   @keyframes fadeInUp {
@@ -280,28 +313,28 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, #3b82f6, #6366f1);
+    background: linear-gradient(to bottom, #6b2737, #4e1d29);
     border-radius: 10px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(to bottom, #2563eb, #4f46e5);
+    background: linear-gradient(to bottom, #4e1d29, #3a1620);
   }
 
   /* === SELECTION TEXTE === */
   ::selection {
-    background: rgba(59, 130, 246, 0.3);
-    color: #1a202c;
+    background: rgba(107, 39, 55, 0.25);
+    color: #1c2321;
   }
 
   ::-moz-selection {
-    background: rgba(59, 130, 246, 0.3);
-    color: #1a202c;
+    background: rgba(107, 39, 55, 0.25);
+    color: #1c2321;
   }
 
   /* === FOCUS VISIBLE === */
   *:focus-visible {
-    outline: 2px solid #3b82f6;
+    outline: 2px solid #6b2737;
     outline-offset: 2px;
   }
 
@@ -353,30 +386,30 @@
 
 /* === STYLES DE BASE === */
 body {
-  font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, 
-    rgba(239, 246, 255, 0.5) 0%,
-    rgba(255, 255, 255, 0.8) 50%,
-    rgba(238, 242, 255, 0.5) 100%
-  );
+  background: var(--color-paper);
   min-height: 100vh;
-  color: #1a202c;
+  color: var(--color-ink);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
 }
 
 /* === AMÉLIORATION DE LA LISIBILITÉ DU TEXTE === */
 .prose {
-  color: #1a202c;
+  color: var(--color-ink);
 }
 
 .prose p {
-  color: #4a5568;
+  color: var(--color-ink-muted);
   line-height: 1.75;
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4 {
-  color: #1a202c;
+  color: var(--color-ink);
   font-weight: 700;
 }
 
@@ -399,8 +432,8 @@ body {
 /* === INPUT FOCUS AMÉLIORÉ === */
 input:focus, select:focus, textarea:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(107, 39, 55, 0.2);
+  border-color: var(--color-brand);
 }
 
 /* === RESPONSIVE FONT SIZES === */
@@ -417,5 +450,15 @@ html {
 @media (max-width: 480px) {
   html {
     font-size: 14px;
+  }
+}
+
+/* === RESPECT DE LA PRÉFÉRENCE "MOUVEMENT RÉDUIT" === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

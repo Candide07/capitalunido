@@ -50,37 +50,37 @@ const Stats = ({ t, country }: StatsProps) => {
     switch (country.code) {
       case 'pe':
         return {
-          bg: 'from-[#D91023]/5 via-white to-[#fcd116]/5',
-          border: 'border-[#D91023]/20',
-          icon1Bg: 'from-[#D91023] to-[#fcd116]',
-          icon2Bg: 'from-[#1a3c6e] to-[#0e2a4f]',
-          icon3Bg: 'from-[#fcd116] to-[#f39c12]',
-          icon4Bg: 'from-[#D91023] to-[#8B0000]',
-          textGradient: 'from-[#D91023] to-[#fcd116]',
+          bg: 'from-[#6b2737]/5 via-white to-[#c9a227]/5',
+          border: 'border-[#6b2737]/20',
+          icon1Bg: 'from-[#6b2737] to-[#c9a227]',
+          icon2Bg: 'from-[#6b2737] to-[#0e2a4f]',
+          icon3Bg: 'from-[#c9a227] to-[#f39c12]',
+          icon4Bg: 'from-[#6b2737] to-[#8B0000]',
+          textGradient: 'from-[#6b2737] to-[#c9a227]',
           textMuted: 'text-gray-600',
           numberColor: 'text-gray-800',
         };
       case 'mx':
         return {
-          bg: 'from-[#006341]/5 via-white to-[#CE1126]/5',
-          border: 'border-[#006341]/20',
-          icon1Bg: 'from-[#006341] to-[#CE1126]',
-          icon2Bg: 'from-[#1a3c6e] to-[#0e2a4f]',
-          icon3Bg: 'from-[#CE1126] to-[#006341]',
-          icon4Bg: 'from-[#006341] to-[#003d2b]',
-          textGradient: 'from-[#006341] to-[#CE1126]',
+          bg: 'from-[#2f6f4e]/5 via-white to-[#CE1126]/5',
+          border: 'border-[#2f6f4e]/20',
+          icon1Bg: 'from-[#2f6f4e] to-[#CE1126]',
+          icon2Bg: 'from-[#6b2737] to-[#0e2a4f]',
+          icon3Bg: 'from-[#CE1126] to-[#2f6f4e]',
+          icon4Bg: 'from-[#2f6f4e] to-[#003d2b]',
+          textGradient: 'from-[#2f6f4e] to-[#CE1126]',
           textMuted: 'text-gray-600',
           numberColor: 'text-gray-800',
         };
       default:
         return {
-          bg: 'from-[#1a3c6e]/5 via-white to-[#1a3c6e]/5',
-          border: 'border-[#fcd116]/20',
+          bg: 'from-[#6b2737]/5 via-white to-[#6b2737]/5',
+          border: 'border-[#c9a227]/20',
           icon1Bg: 'from-[#ef2b2d] to-[#c0392b]',
-          icon2Bg: 'from-[#1a3c6e] to-[#0e2a4f]',
-          icon3Bg: 'from-[#fcd116] to-[#f39c12]',
+          icon2Bg: 'from-[#6b2737] to-[#0e2a4f]',
+          icon3Bg: 'from-[#c9a227] to-[#f39c12]',
           icon4Bg: 'from-[#009e49] to-[#27ae60]',
-          textGradient: 'from-[#fcd116] to-[#ef2b2d]',
+          textGradient: 'from-[#c9a227] to-[#ef2b2d]',
           textMuted: 'text-gray-600',
           numberColor: 'text-gray-800',
         };

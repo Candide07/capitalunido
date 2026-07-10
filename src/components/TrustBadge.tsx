@@ -32,21 +32,21 @@ const TrustBadge = ({ lang, country }: TrustBadgeProps) => {
     switch (country.code) {
       case 'pe':
         return {
-          iconBg: 'bg-[#D91023]',
+          iconBg: 'bg-[#6b2737]',
           iconColor: 'text-white',
-          shadowColor: 'shadow-[#D91023]/20',
-          borderColor: 'border-[#D91023]/20',
-          accentText: 'text-[#D91023]',
-          countryColor: 'text-[#D91023]',
+          shadowColor: 'shadow-[#6b2737]/20',
+          borderColor: 'border-[#6b2737]/20',
+          accentText: 'text-[#6b2737]',
+          countryColor: 'text-[#6b2737]',
         };
       case 'mx':
         return {
-          iconBg: 'bg-[#006341]',
+          iconBg: 'bg-[#2f6f4e]',
           iconColor: 'text-white',
-          shadowColor: 'shadow-[#006341]/20',
-          borderColor: 'border-[#006341]/20',
-          accentText: 'text-[#006341]',
-          countryColor: 'text-[#006341]',
+          shadowColor: 'shadow-[#2f6f4e]/20',
+          borderColor: 'border-[#2f6f4e]/20',
+          accentText: 'text-[#2f6f4e]',
+          countryColor: 'text-[#2f6f4e]',
         };
       default:
         return {

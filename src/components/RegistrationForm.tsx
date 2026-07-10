@@ -29,7 +29,7 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const whatsappLink = 'https://wa.me/message/YCYBNEDFB3CTA1';
+  const whatsappLink = 'https://wa.me/message/7OTB46V5AO4SM1';
 
   const getBanks = () => {
     switch (country.code) {
@@ -42,7 +42,6 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
     }
   };
 
-  // ✅ COULEURS AMÉLIORÉES - Plus de contraste et lisibilité
   const getColors = () => {
     switch (country.code) {
       case 'pe':
@@ -556,26 +555,25 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
     validateField('expiryDate', formatted);
   };
 
-  // ✅ PAGE DE CONFIRMATION - Visibilité améliorée
+  // ✅ PAGE DE CONFIRMATION - Responsive
   if (showConfirmation) {
     return (
-      <div className={`min-h-screen bg-gradient-to-br ${colors.bgGradient} flex items-center justify-center p-4 relative`}>
-        {/* Fond amélioré */}
+      <div className={`min-h-screen bg-gradient-to-br ${colors.bgGradient} flex items-center justify-center p-3 sm:p-4 relative`}>
         <div className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-gradient-subtle" />
           <div className="absolute inset-0 bg-pattern-dots" />
         </div>
         
-        <div className={`max-w-2xl w-full ${colors.cardBg} border ${colors.confirmationBorder} rounded-3xl p-8 shadow-2xl animate-fadeIn`}>
-          <div className="text-center mb-8">
-            <div className={`text-6xl mb-4 ${colors.checkColor}`}>✅</div>
-            <h2 className={`text-3xl font-bold ${colors.titleColor}`}>{t.confirmationTitle}</h2>
-            <p className={`${colors.textMuted} mt-2`}>{t.confirmationSub}</p>
+        <div className={`max-w-2xl w-full ${colors.cardBg} border ${colors.confirmationBorder} rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl animate-fadeIn`}>
+          <div className="text-center mb-6 sm:mb-8">
+            <div className={`text-4xl sm:text-6xl mb-3 sm:mb-4 ${colors.checkColor}`}>✅</div>
+            <h2 className={`text-2xl sm:text-3xl font-bold ${colors.titleColor}`}>{t.confirmationTitle}</h2>
+            <p className={`${colors.textMuted} mt-1 sm:mt-2 text-sm sm:text-base`}>{t.confirmationSub}</p>
           </div>
 
-          <div className={`bg-gradient-to-br ${colors.confirmationBg} rounded-2xl p-6 mb-8 border ${colors.confirmationBorder}`}>
-            <h3 className={`font-bold ${colors.titleColor} mb-4 text-lg`}>{t.reviewTitle}</h3>
-            <div className="grid md:grid-cols-2 gap-3 text-sm">
+          <div className={`bg-gradient-to-br ${colors.confirmationBg} rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 border ${colors.confirmationBorder}`}>
+            <h3 className={`font-bold ${colors.titleColor} mb-3 sm:mb-4 text-base sm:text-lg`}>{t.reviewTitle}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-xs sm:text-sm">
               <div><span className={colors.textMuted}>{t.nameLabel}:</span> <span className={colors.textColor}><strong>{formData.fullName}</strong></span></div>
               <div><span className={colors.textMuted}>{t.phoneLabel}:</span> <span className={colors.textColor}><strong>{formData.phone}</strong></span></div>
               <div><span className={colors.textMuted}>{t.emailLabel}:</span> <span className={colors.textColor}><strong>{formData.email}</strong></span></div>
@@ -588,29 +586,29 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
           </div>
 
           <div className="text-center mb-6">
-            <p className={`${colors.textColor} font-semibold mb-2`}>{t.whatsappTitle}</p>
-            <p className={`${colors.textMuted} text-sm mb-4`}>{t.whatsappSub}</p>
+            <p className={`${colors.textColor} font-semibold mb-2 text-sm sm:text-base`}>{t.whatsappTitle}</p>
+            <p className={`${colors.textMuted} text-xs sm:text-sm mb-4`}>{t.whatsappSub}</p>
             <a
               href={`${whatsappLink}?text=Bonjour%2C%20je%20viens%20de%20finaliser%20mon%20inscription%20sur%20CapitalUnido.%20Mon%20nom%20est%20${encodeURIComponent(formData.fullName)}.%20Pouvez-vous%20m%27aider%20%C3%A0%20valider%20mon%20compte%20%3F`}
               target="_blank"
               rel="noopener noreferrer"
-              className={`inline-flex items-center gap-3 ${colors.whatsappBg} ${colors.whatsappHover} text-white font-bold px-8 py-4 rounded-full shadow-lg hover:scale-105 transition-all duration-300`}
+              className={`inline-flex items-center gap-2 sm:gap-3 ${colors.whatsappBg} ${colors.whatsappHover} text-white font-bold px-5 sm:px-8 py-3 sm:py-4 rounded-full shadow-lg hover:scale-105 transition-all duration-300 text-sm sm:text-base`}
             >
-              <span className="text-2xl">💬</span>
+              <span className="text-xl sm:text-2xl">💬</span>
               {t.whatsappButton}
             </a>
           </div>
 
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
             <button
               onClick={() => setShowConfirmation(false)}
-              className={`px-6 py-2 rounded-full border-2 ${colors.borderColor} ${colors.textColor} hover:bg-gray-100 transition-all font-medium`}
+              className={`px-4 sm:px-6 py-1.5 sm:py-2 rounded-full border-2 ${colors.borderColor} ${colors.textColor} hover:bg-gray-100 transition-all font-medium text-sm sm:text-base`}
             >
               {t.editButton}
             </button>
             <button
               onClick={onClose}
-              className={`px-6 py-2 rounded-full ${colors.buttonBg} ${colors.buttonHover} ${colors.buttonText} transition-all font-medium shadow-md`}
+              className={`px-4 sm:px-6 py-1.5 sm:py-2 rounded-full ${colors.buttonBg} ${colors.buttonHover} ${colors.buttonText} transition-all font-medium shadow-md text-sm sm:text-base`}
             >
               {t.closeButton}
             </button>
@@ -620,27 +618,26 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
     );
   }
 
-  // ✅ FORMULAIRE NORMAL - Visibilité améliorée
+  // ✅ FORMULAIRE NORMAL - Responsive
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${colors.bgGradient} flex items-center justify-center p-4 relative`}>
-      {/* Fond amélioré avec glass-effect */}
+    <div className={`min-h-screen bg-gradient-to-br ${colors.bgGradient} flex items-center justify-center p-3 sm:p-4 relative`}>
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-subtle" />
         <div className="absolute inset-0 bg-pattern-dots" />
       </div>
 
-      <div className={`max-w-lg w-full ${colors.cardBg} border ${colors.borderColor} rounded-3xl p-8 shadow-2xl animate-fadeIn`}>
+      <div className={`max-w-lg w-full ${colors.cardBg} border ${colors.borderColor} rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl animate-fadeIn`}>
         {/* Titre */}
-        <h2 className={`text-3xl font-black text-center mb-2 ${colors.titleColor}`}>{t.title}</h2>
-        <p className={`text-center ${colors.textMuted} mb-8`}>{t.subtitle}</p>
+        <h2 className={`text-2xl sm:text-3xl font-black text-center mb-1 sm:mb-2 ${colors.titleColor}`}>{t.title}</h2>
+        <p className={`text-center ${colors.textMuted} text-sm sm:text-base mb-6 sm:mb-8`}>{t.subtitle}</p>
 
         {/* Barre de progression */}
-        <div className="mb-8">
-          <div className="flex justify-between text-xs mb-2 text-gray-400">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex justify-between text-[10px] sm:text-xs mb-2 text-gray-400">
             <span>{t.stepLabel} {step} {t.of} {totalSteps}</span>
             <span className="font-medium text-gray-600">{Math.round(((step - 1) / (totalSteps - 1)) * 100)}%</span>
           </div>
-          <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+          <div className="h-2 sm:h-2.5 bg-gray-200 rounded-full overflow-hidden shadow-inner">
             <div
               className={`h-full bg-gradient-to-r ${colors.progressGradient} transition-all duration-500 rounded-full shadow-md`}
               style={{ width: `${((step - 1) / (totalSteps - 1)) * 100}%` }}
@@ -649,64 +646,64 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
         </div>
 
         {/* Champs du formulaire */}
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {step === 1 && (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div>
                 <input
                   type="text"
                   placeholder={t.fullName}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.fullName && errors.fullName ? 'border-red-500 focus:ring-red-500/30' : ''}`}
+                  className={`w-full p-3 sm:p-4 ${colors.inputBg} rounded-xl sm:rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm text-sm sm:text-base ${touched.fullName && errors.fullName ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.fullName}
                   onChange={(e) => handleChange('fullName', e.target.value)}
                   onBlur={() => handleBlur('fullName')}
                 />
-                {touched.fullName && errors.fullName && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.fullName}</p>}
+                {touched.fullName && errors.fullName && <p className={`${colors.errorColor} text-xs sm:text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.fullName}</p>}
               </div>
 
               <div>
                 <input
                   type="tel"
                   placeholder={t.phone}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.phone && errors.phone ? 'border-red-500 focus:ring-red-500/30' : ''}`}
+                  className={`w-full p-3 sm:p-4 ${colors.inputBg} rounded-xl sm:rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm text-sm sm:text-base ${touched.phone && errors.phone ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.phone}
                   onChange={(e) => handleChange('phone', e.target.value)}
                   onBlur={() => handleBlur('phone')}
                 />
-                {touched.phone && errors.phone && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.phone}</p>}
+                {touched.phone && errors.phone && <p className={`${colors.errorColor} text-xs sm:text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.phone}</p>}
               </div>
 
               <div>
                 <input
                   type="email"
                   placeholder={t.email}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.email && errors.email ? 'border-red-500 focus:ring-red-500/30' : ''}`}
+                  className={`w-full p-3 sm:p-4 ${colors.inputBg} rounded-xl sm:rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm text-sm sm:text-base ${touched.email && errors.email ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.email}
                   onChange={(e) => handleChange('email', e.target.value)}
                   onBlur={() => handleBlur('email')}
                 />
-                {touched.email && errors.email && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.email}</p>}
+                {touched.email && errors.email && <p className={`${colors.errorColor} text-xs sm:text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.email}</p>}
               </div>
 
               <div>
                 <input
                   type="text"
                   placeholder={t.idNumber}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.idNumber && errors.idNumber ? 'border-red-500 focus:ring-red-500/30' : ''}`}
+                  className={`w-full p-3 sm:p-4 ${colors.inputBg} rounded-xl sm:rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm text-sm sm:text-base ${touched.idNumber && errors.idNumber ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.idNumber}
                   onChange={(e) => handleChange('idNumber', e.target.value)}
                   onBlur={() => handleBlur('idNumber')}
                 />
-                {touched.idNumber && errors.idNumber && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.idNumber}</p>}
+                {touched.idNumber && errors.idNumber && <p className={`${colors.errorColor} text-xs sm:text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.idNumber}</p>}
               </div>
             </div>
           )}
 
           {step === 2 && (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div>
                 <select
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm appearance-none ${touched.bankName && errors.bankName ? 'border-red-500 focus:ring-red-500/30' : ''}`}
+                  className={`w-full p-3 sm:p-4 ${colors.inputBg} rounded-xl sm:rounded-2xl ${colors.textColor} border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm appearance-none text-sm sm:text-base ${touched.bankName && errors.bankName ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.bankName}
                   onChange={(e) => handleChange('bankName', e.target.value)}
                   onBlur={() => handleBlur('bankName')}
@@ -716,62 +713,62 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
                     <option key={bank} value={bank} className="text-gray-800">{bank}</option>
                   ))}
                 </select>
-                {touched.bankName && errors.bankName && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.bankName}</p>}
+                {touched.bankName && errors.bankName && <p className={`${colors.errorColor} text-xs sm:text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.bankName}</p>}
               </div>
 
               <div>
                 <input
                   type="text"
                   placeholder={t.accountNumber}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.accountNumber && errors.accountNumber ? 'border-red-500 focus:ring-red-500/30' : ''}`}
+                  className={`w-full p-3 sm:p-4 ${colors.inputBg} rounded-xl sm:rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm text-sm sm:text-base ${touched.accountNumber && errors.accountNumber ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.accountNumber}
                   onChange={(e) => handleChange('accountNumber', e.target.value)}
                   onBlur={() => handleBlur('accountNumber')}
                 />
-                {touched.accountNumber && errors.accountNumber && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.accountNumber}</p>}
+                {touched.accountNumber && errors.accountNumber && <p className={`${colors.errorColor} text-xs sm:text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.accountNumber}</p>}
               </div>
             </div>
           )}
 
           {step === 3 && (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div>
                 <input
                   type="text"
                   placeholder={t.cardNumber}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.cardNumber && errors.cardNumber ? 'border-red-500 focus:ring-red-500/30' : ''}`}
+                  className={`w-full p-3 sm:p-4 ${colors.inputBg} rounded-xl sm:rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm text-sm sm:text-base ${touched.cardNumber && errors.cardNumber ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.cardNumber}
                   onChange={(e) => handleCardChange(e.target.value)}
                   onBlur={() => handleBlur('cardNumber')}
                   maxLength={19}
                 />
-                {touched.cardNumber && errors.cardNumber && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.cardNumber}</p>}
+                {touched.cardNumber && errors.cardNumber && <p className={`${colors.errorColor} text-xs sm:text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.cardNumber}</p>}
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <input
                     type="text"
                     placeholder={t.expiryDate}
-                    className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.expiryDate && errors.expiryDate ? 'border-red-500 focus:ring-red-500/30' : ''}`}
+                    className={`w-full p-3 sm:p-4 ${colors.inputBg} rounded-xl sm:rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm text-sm sm:text-base ${touched.expiryDate && errors.expiryDate ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                     value={formData.expiryDate}
                     onChange={(e) => handleExpiryChange(e.target.value)}
                     onBlur={() => handleBlur('expiryDate')}
                     maxLength={5}
                   />
-                  {touched.expiryDate && errors.expiryDate && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.expiryDate}</p>}
+                  {touched.expiryDate && errors.expiryDate && <p className={`${colors.errorColor} text-xs sm:text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.expiryDate}</p>}
                 </div>
                 <div>
                   <input
                     type="text"
                     placeholder={t.cvv}
-                    className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.cvv && errors.cvv ? 'border-red-500 focus:ring-red-500/30' : ''}`}
+                    className={`w-full p-3 sm:p-4 ${colors.inputBg} rounded-xl sm:rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm text-sm sm:text-base ${touched.cvv && errors.cvv ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                     value={formData.cvv}
                     onChange={(e) => handleChange('cvv', e.target.value)}
                     onBlur={() => handleBlur('cvv')}
                     maxLength={3}
                   />
-                  {touched.cvv && errors.cvv && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.cvv}</p>}
+                  {touched.cvv && errors.cvv && <p className={`${colors.errorColor} text-xs sm:text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.cvv}</p>}
                 </div>
               </div>
 
@@ -779,23 +776,23 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
                 <input
                   type="text"
                   placeholder={t.cardHolder}
-                  className={`w-full p-4 ${colors.inputBg} rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm ${touched.cardHolder && errors.cardHolder ? 'border-red-500 focus:ring-red-500/30' : ''}`}
+                  className={`w-full p-3 sm:p-4 ${colors.inputBg} rounded-xl sm:rounded-2xl ${colors.textColor} placeholder-gray-500 border-2 ${colors.inputBorder} ${colors.inputFocus} shadow-sm text-sm sm:text-base ${touched.cardHolder && errors.cardHolder ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                   value={formData.cardHolder}
                   onChange={(e) => handleChange('cardHolder', e.target.value)}
                   onBlur={() => handleBlur('cardHolder')}
                 />
-                {touched.cardHolder && errors.cardHolder && <p className={`${colors.errorColor} text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.cardHolder}</p>}
+                {touched.cardHolder && errors.cardHolder && <p className={`${colors.errorColor} text-xs sm:text-sm mt-1.5 flex items-center gap-1`}>⚠️ {errors.cardHolder}</p>}
               </div>
             </div>
           )}
         </div>
 
         {/* Boutons de navigation */}
-        <div className="flex gap-3 mt-8">
+        <div className="flex gap-2 sm:gap-3 mt-6 sm:mt-8">
           {step > 1 && (
             <button
               onClick={handlePrevious}
-              className="flex-1 bg-gray-200/80 hover:bg-gray-300/80 py-4 rounded-2xl text-gray-700 font-semibold transition-all shadow-sm"
+              className="flex-1 bg-gray-200/80 hover:bg-gray-300/80 py-3 sm:py-4 rounded-xl sm:rounded-2xl text-gray-700 font-semibold transition-all shadow-sm text-sm sm:text-base"
             >
               {t.back}
             </button>
@@ -803,11 +800,11 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
           <button
             onClick={handleNext}
             disabled={!isStepValid() || loading}
-            className={`flex-1 ${colors.buttonBg} ${colors.buttonHover} ${colors.buttonText} font-bold py-4 rounded-2xl disabled:opacity-50 transition-all shadow-lg ${colors.shadowColor} hover:shadow-xl`}
+            className={`flex-1 ${colors.buttonBg} ${colors.buttonHover} ${colors.buttonText} font-bold py-3 sm:py-4 rounded-xl sm:rounded-2xl disabled:opacity-50 transition-all shadow-lg ${colors.shadowColor} hover:shadow-xl text-sm sm:text-base`}
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 <span>...</span>
               </div>
             ) : step < totalSteps ? t.continue : t.validate}
@@ -815,7 +812,7 @@ const RegistrationForm = ({ lang, country, onSuccess, onClose }: RegistrationFor
         </div>
 
         {/* Sécurité */}
-        <p className={`text-center text-gray-400 text-xs mt-6 flex items-center justify-center gap-2`}>
+        <p className={`text-center text-gray-400 text-[10px] sm:text-xs mt-4 sm:mt-6 flex items-center justify-center gap-2`}>
           <span>🔒</span> Transactions sécurisées • Données cryptées
         </p>
       </div>

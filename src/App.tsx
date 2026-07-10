@@ -23,6 +23,10 @@ import AdminLogin from './components/AdminLogin';
 import { getTranslations, Lang } from './data/translations';
 import { countries, CountryCode, CountryConfig, BRAND_NAME } from './data/countries';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { supabase } from './lib/supabase';
+
+// Couleurs par défaut pour le FlagStrip
+const DEFAULT_FLAG_COLORS = ['#fcd116', '#ef2b2d', '#009e49', '#1a3c6e'];
 
 function AppContent() {
   const [currentLang, setCurrentLang] = useState<Lang>('es');
@@ -33,7 +37,7 @@ function AppContent() {
   const { user } = useAuth();
 
   const country = countries[currentCountry];
-  const t = getTranslations(currentLang, country);
+  const t = country ? getTranslations(currentLang, country) : null;
 
   const getBackground = () => {
     switch (currentCountry) {
@@ -55,17 +59,21 @@ function AppContent() {
     if (urlParams.get('admin') === 'true') {
       setShowAdminLogin(true);
     }
+    
+    const refCode = urlParams.get('ref');
+    if (refCode && currentPage === 'home') {
+      navigateTo('register');
+    }
   }, []);
 
-  // ✅ REDIRECTION UNIQUEMENT DEPUIS LOGIN / REGISTER
   useEffect(() => {
     if (user && (currentPage === 'login' || currentPage === 'register')) {
       navigateTo('dashboard');
     }
   }, [user, currentPage]);
 
-  // 📝 Traduction du texte "Certifié et régulé par"
   const getRegulatorText = (lang: Lang, country: CountryConfig) => {
+    if (!country || !country.regulators) return 'Confiance et transparence au service de vos investissements';
     const names = country.regulators.map(r => r.name);
     const texts = {
       fr: `Certifié et régulé par ${names.join(' et ')}`,
@@ -84,7 +92,19 @@ function AppContent() {
       setShowAdminLogin(true);
       return null;
     }
-    return <AdminDashboard onClose={() => { setCurrentPage('home'); setIsAdminAuthenticated(false); }} />;
+    return <AdminDashboard onClose={() => { supabase.auth.signOut(); setCurrentPage('home'); setIsAdminAuthenticated(false); }} />;
+  }
+
+  if (currentPage === 'register') {
+    const params = new URLSearchParams(window.location.search);
+    const refCode = params.get('ref') || undefined;
+    
+    return <Register 
+      onClose={() => navigateTo('home')} 
+      onSwitchToLogin={() => navigateTo('login')}
+      lang={currentLang}
+      referralCode={refCode}
+    />;
   }
 
   if (currentPage === 'login') {
@@ -92,14 +112,7 @@ function AppContent() {
       onClose={() => navigateTo('home')} 
       onSwitchToRegister={() => navigateTo('register')}
       lang={currentLang}
-    />;
-  }
-
-  if (currentPage === 'register') {
-    return <Register 
-      onClose={() => navigateTo('home')} 
-      onSwitchToLogin={() => navigateTo('login')}
-      lang={currentLang}
+      onNavigateToDashboard={() => navigateTo('dashboard')}
     />;
   }
 
@@ -114,10 +127,27 @@ function AppContent() {
     />;
   }
 
+  // 👈 Vérification de sécurité : si country est undefined, on utilise des valeurs par défaut
+  const safeCountry = country || {
+    flagColors: DEFAULT_FLAG_COLORS,
+    regulators: [],
+    label: 'Pérou',
+    code: 'pe'
+  };
+
+  const safeT = t || {
+    hero: { title: 'CapitalUnido', subtitle: 'Investissez ensemble' },
+    stats: { title: 'Nos statistiques' },
+    features: { title: 'Nos fonctionnalités' },
+    testimonials: { title: 'Témoignages', titleHighlight: 'nos membres' },
+    footer: { copyright: 'Tous droits réservés' },
+    cta: { title: 'Commencez maintenant' }
+  };
+
   return (
     <div className={`min-h-screen bg-gradient-to-br ${bgGradient} text-gray-800 overflow-x-hidden relative`}>
       <ParticleBackground />
-      <FlagStrip colors={country.flagColors} />
+      {safeCountry && <FlagStrip colors={safeCountry.flagColors} />}
       <Header 
         currentLang={currentLang} 
         onLangChange={setCurrentLang} 
@@ -129,7 +159,7 @@ function AppContent() {
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16 relative z-10">
-        <Hero t={t} country={country} lang={currentLang} onCTA={() => {}} />
+        <Hero t={safeT} country={safeCountry} lang={currentLang} onCTA={() => navigateTo('register')} />
         
         <section className="py-16 bg-white/70 backdrop-blur-lg rounded-3xl mb-16 shadow-xl animate-fade-in-up">
           <div className="max-w-4xl mx-auto px-6 text-center">
@@ -137,26 +167,26 @@ function AppContent() {
               {BRAND_NAME} — Une plateforme d'investissement innovante
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              {country.regulators.length > 0 
-                ? getRegulatorText(currentLang, country)
+              {safeCountry.regulators && safeCountry.regulators.length > 0 
+                ? getRegulatorText(currentLang, safeCountry)
                 : 'Confiance et transparence au service de vos investissements'}
             </p>
           </div>
         </section>
 
-        <Stats t={t} country={country} />
-        <SocialProof lang={currentLang} country={country} />
-        <Features t={t} country={country} />
-        <Testimonials t={t} country={country} lang={currentLang} /> {/* 👈 AJOUTÉ */}
-        <PriceComparison lang={currentLang} country={country} />
-        <FAQ lang={currentLang} country={country} />
-        <UrgencyCounter t={t} country={country} onCTA={() => {}} />
-        <CTAFinal t={t} country={country} onCTA={() => {}} />
-        <Footer t={t} country={country} />
+        <Stats t={safeT} country={safeCountry} />
+        <SocialProof lang={currentLang} country={safeCountry} />
+        <Features t={safeT} country={safeCountry} />
+        <Testimonials t={safeT} country={safeCountry} lang={currentLang} />
+        <PriceComparison lang={currentLang} country={safeCountry} />
+        <FAQ lang={currentLang} country={safeCountry} />
+        <UrgencyCounter t={safeT} country={safeCountry} onCTA={() => navigateTo('register')} />
+        <CTAFinal t={safeT} country={safeCountry} onCTA={() => navigateTo('register')} />
+        <Footer t={safeT} country={safeCountry} />
       </main>
 
-      <NotificationToast country={country} lang={currentLang} />
-      <TrustBadge lang={currentLang} country={country} />
+      <NotificationToast country={safeCountry} lang={currentLang} />
+      <TrustBadge lang={currentLang} country={safeCountry} />
       <ScrollToTop />
     </div>
   );

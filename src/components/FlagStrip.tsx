@@ -1,8 +1,13 @@
 interface FlagStripProps {
-  colors: [string, string, string, string];
+  colors?: [string, string, string, string]; // 👈 Rendu optionnel
 }
 
 const FlagStrip = ({ colors }: FlagStripProps) => {
+  // 👈 Vérification si colors est undefined ou vide
+  if (!colors || !Array.isArray(colors) || colors.length === 0) {
+    return null; // Ne rien afficher
+  }
+
   return (
     <div className="fixed top-0 left-0 right-0 h-1.5 z-[1001] flex shadow-md">
       {colors.map((color, i) => (

@@ -13,30 +13,30 @@ const CTAFinal = ({ t, country, onCTA }: CTAFinalProps) => {
     switch (country.code) {
       case 'pe':
         return {
-          bgFrom: 'from-[#D91023]',
+          bgFrom: 'from-[#6b2737]',
           bgTo: 'to-[#8B0000]',
-          btnFrom: 'from-[#D91023]',
-          btnTo: 'to-[#fcd116]',
+          btnFrom: 'from-[#6b2737]',
+          btnTo: 'to-[#c9a227]',
           textColor: 'text-white',
-          shadowColor: 'shadow-[#D91023]/50',
+          shadowColor: 'shadow-[#6b2737]/50',
         };
       case 'mx':
         return {
-          bgFrom: 'from-[#006341]',
+          bgFrom: 'from-[#2f6f4e]',
           bgTo: 'to-[#003d2b]',
           btnFrom: 'from-[#CE1126]',
-          btnTo: 'to-[#006341]',
+          btnTo: 'to-[#2f6f4e]',
           textColor: 'text-white',
-          shadowColor: 'shadow-[#006341]/50',
+          shadowColor: 'shadow-[#2f6f4e]/50',
         };
       default:
         return {
-          bgFrom: 'from-[#1a3c6e]',
+          bgFrom: 'from-[#6b2737]',
           bgTo: 'to-[#0e2a4f]',
-          btnFrom: 'from-[#fcd116]',
+          btnFrom: 'from-[#c9a227]',
           btnTo: 'to-[#ef2b2d]',
           textColor: 'text-white',
-          shadowColor: 'shadow-[#1a3c6e]/50',
+          shadowColor: 'shadow-[#6b2737]/50',
         };
     }
   };

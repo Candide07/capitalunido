@@ -3,6 +3,9 @@ import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { countries, CountryCode, Lang } from '../data/countries';
 import DashboardCharts from './DashboardCharts';
+import AffiliateDashboard from './AffiliateDashboard';
+import NotificationBell from './NotificationBell';
+import { UserPlus } from 'lucide-react';
 
 interface Transaction {
   id: number;
@@ -53,6 +56,9 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
   const [showWithdrawForm, setShowWithdrawForm] = useState(false);
   const [showWithdrawMessage, setShowWithdrawMessage] = useState(false);
 
+  // État pour l'affiliation
+  const [showAffiliate, setShowAffiliate] = useState(false);
+
   // 🔔 Notification de rendement
   const [returnNotification, setReturnNotification] = useState<{
     show: boolean;
@@ -72,7 +78,7 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
   ]);
 
   // 🔗 Lien WhatsApp
-  const WHATSAPP_LINK = 'https://wa.me/message/YCYBNEDFB3CTA1';
+  const WHATSAPP_LINK = 'https://wa.me/message/7OTB46V5AO4SM1';
 
   const totalInvested = transactions
     .filter(t => t.status === 'confirmed' && t.transaction_type === 'deposit')
@@ -107,15 +113,46 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
 
   const withdrawStatus = canWithdraw();
 
+  // 👈 Détection du pays depuis le numéro de téléphone
+  const detectCountryFromPhone = (phone: string): CountryCode => {
+    if (!phone) return 'pe';
+    
+    const cleanPhone = phone.replace(/\s/g, '');
+    
+    // Indicatif Pérou: +51 ou 51
+    if (cleanPhone.startsWith('+51') || cleanPhone.startsWith('51')) {
+      return 'pe';
+    }
+    // Indicatif Mexique: +52 ou 52
+    if (cleanPhone.startsWith('+52') || cleanPhone.startsWith('52')) {
+      return 'mx';
+    }
+    
+    // Par défaut Pérou
+    return 'pe';
+  };
+
+  // 👈 Récupération du pays
   const getCountry = (): CountryCode => {
+    // 1. Depuis l'URL (pour test)
     const params = new URLSearchParams(window.location.search);
-    const country = params.get('country') as CountryCode;
-    return country && (country === 'pe' || country === 'mx') ? country : 'pe';
+    const urlCountry = params.get('country') as CountryCode;
+    if (urlCountry && (urlCountry === 'pe' || urlCountry === 'mx')) {
+      return urlCountry;
+    }
+    
+    // 2. Depuis le profil utilisateur (téléphone)
+    if (profile?.phone) {
+      const detected = detectCountryFromPhone(profile.phone);
+      if (detected) return detected;
+    }
+    
+    // 3. Par défaut Pérou
+    return 'pe';
   };
 
   const countryCode = getCountry();
   const country = countries[countryCode];
-  const minDeposit = country.amounts.minDeposit || 100;
 
   const texts = {
     fr: {
@@ -141,7 +178,6 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
       maxAmount: 'maximum',
       paymentMethod: 'Méthode de paiement',
       bankTransfer: 'Virement bancaire',
-      yape: 'Yape',
       plin: 'Plin',
       paypal: 'PayPal',
       confirmDeposit: 'Confirmer le dépôt',
@@ -176,6 +212,7 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
       depositRedirect: 'Redirection vers WhatsApp...',
       totalBalance: 'Patrimoine total',
       charts: 'Graphiques',
+      affiliate: 'Affiliation',
     },
     en: {
       loading: 'Loading your dashboard...',
@@ -200,7 +237,6 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
       maxAmount: 'maximum',
       paymentMethod: 'Payment method',
       bankTransfer: 'Bank transfer',
-      yape: 'Yape',
       plin: 'Plin',
       paypal: 'PayPal',
       confirmDeposit: 'Confirm deposit',
@@ -235,6 +271,7 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
       depositRedirect: 'Redirecting to WhatsApp...',
       totalBalance: 'Total wealth',
       charts: 'Charts',
+      affiliate: 'Affiliate',
     },
     es: {
       loading: 'Cargando tu panel de control...',
@@ -259,7 +296,6 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
       maxAmount: 'máximo',
       paymentMethod: 'Método de pago',
       bankTransfer: 'Transferencia bancaria',
-      yape: 'Yape',
       plin: 'Plin',
       paypal: 'PayPal',
       confirmDeposit: 'Confirmar depósito',
@@ -294,10 +330,32 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
       depositRedirect: 'Redirigiendo a WhatsApp...',
       totalBalance: 'Patrimonio total',
       charts: 'Gráficos',
+      affiliate: 'Afiliado',
     },
   };
 
   const t = texts[lang] || texts.fr;
+
+  // 👈 MIN DEPOSIT selon le pays détecté automatiquement
+  const minDeposit = (() => {
+    switch (countryCode) {
+      case 'mx': return 650;
+      case 'pe': return 100;
+      default: return 100;
+    }
+  })();
+
+  // 👈 MÉTHODES DE PAIEMENT disponibles
+  const getPaymentMethods = () => {
+    const methods = [
+      { value: 'bank_transfer', label: t.bankTransfer },
+      { value: 'plin', label: t.plin },
+      { value: 'paypal', label: t.paypal },
+    ];
+    return methods;
+  };
+
+  const paymentMethods = getPaymentMethods();
 
   // 📈 Calcul automatique des rendements quotidiens (8% par jour)
   const calculateDailyReturn = async (profileData: UserProfile) => {
@@ -549,7 +607,7 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e8edf5] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-[#D91023] border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="w-12 h-12 border-4 border-[#6b2737] border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="mt-4 text-gray-500">{t.loading}</p>
         </div>
       </div>
@@ -563,7 +621,7 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
           <p className="text-gray-600">{t.profileNotFound}</p>
           <button
             onClick={() => window.location.href = '/'}
-            className="mt-4 bg-[#D91023] hover:bg-[#D91023]/80 text-white font-bold px-6 py-3 rounded-full transition-all"
+            className="mt-4 bg-[#6b2737] hover:bg-[#6b2737]/80 text-white font-bold px-6 py-3 rounded-full transition-all"
           >
             ← Retour à l'accueil
           </button>
@@ -573,27 +631,39 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e8edf5] p-6 md:p-10">
+    <div className="min-h-screen bg-gradient-to-br from-[#f8fafc] to-[#e8edf5] p-3 sm:p-4 md:p-6 lg:p-10">
       <div className="max-w-7xl mx-auto">
         {/* ============================================================ */}
         {/* 1️⃣ EN-TÊTE - Nom + Boutons */}
         {/* ============================================================ */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 mb-6 border border-gray-100">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">
-                {t.greeting}, {profile.full_name}
-              </h1>
-              <p className="text-gray-400 text-sm">{profile.email}</p>
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 mb-4 sm:mb-6 border border-gray-100">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-3 sm:gap-4 w-full lg:w-auto">
+              <div className="min-w-0 flex-1">
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 truncate">
+                  {t.greeting}, {profile.full_name}
+                </h1>
+                <p className="text-xs sm:text-sm text-gray-400 truncate">{profile.email}</p>
+              </div>
+              <div className="flex-shrink-0">
+                <NotificationBell 
+                  userId={user?.id || ''} 
+                  lang={lang}
+                  country={countryCode}
+                />
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2">
+            
+            {/* Boutons - responsive */}
+            <div className="flex flex-wrap gap-1.5 sm:gap-2 w-full lg:w-auto">
               <button
                 onClick={() => {
                   setShowDepositForm(!showDepositForm);
                   setShowWithdrawForm(false);
                   setShowWithdrawMessage(false);
+                  setShowAffiliate(false);
                 }}
-                className="bg-[#D91023] hover:bg-[#D91023]/90 text-white font-semibold px-5 py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg text-sm"
+                className="bg-[#6b2737] hover:bg-[#6b2737]/90 text-white font-semibold px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg text-xs sm:text-sm flex-1 sm:flex-none"
               >
                 + {t.deposit}
               </button>
@@ -603,56 +673,84 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
                     setShowWithdrawForm(!showWithdrawForm);
                     setShowDepositForm(false);
                     setShowWithdrawMessage(false);
+                    setShowAffiliate(false);
                   } else {
                     setShowWithdrawMessage(true);
                     setShowWithdrawForm(false);
                     setTimeout(() => setShowWithdrawMessage(false), 5000);
                   }
                 }}
-                className={`font-semibold px-5 py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg text-sm ${
+                className={`font-semibold px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg text-xs sm:text-sm flex-1 sm:flex-none ${
                   withdrawStatus.allowed
-                    ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                    ? 'bg-[#6b2737] hover:bg-[#4e1d29] text-white'
                     : 'bg-gray-200 text-gray-400 cursor-pointer hover:bg-gray-300'
                 }`}
               >
                 {t.withdraw}
               </button>
               <button
-                onClick={onClose}
-                className="bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold px-4 py-2.5 rounded-xl transition-all text-sm"
+                onClick={() => {
+                  setShowAffiliate(!showAffiliate);
+                  setShowDepositForm(false);
+                  setShowWithdrawForm(false);
+                  setShowWithdrawMessage(false);
+                }}
+                className={`font-semibold px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg text-xs sm:text-sm flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none ${
+                  showAffiliate
+                    ? 'bg-purple-700 text-white'
+                    : 'bg-purple-600 hover:bg-purple-700 text-white'
+                }`}
               >
-                ✕ {t.close}
+                <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden xs:inline">{t.affiliate}</span>
+                <span className="xs:hidden">Aff.</span>
+              </button>
+              <button
+                onClick={onClose}
+                className="bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-all text-xs sm:text-sm flex-1 sm:flex-none"
+              >
+                ✕ <span className="hidden xs:inline">{t.close}</span>
               </button>
               <button
                 onClick={() => { signOut(); window.location.href = '/'; }}
-                className="bg-red-50 hover:bg-red-100 text-red-600 font-semibold px-4 py-2.5 rounded-xl transition-all border border-red-200 text-sm"
+                className="bg-red-50 hover:bg-red-100 text-red-600 font-semibold px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-all border border-red-200 text-xs sm:text-sm flex-1 sm:flex-none"
               >
-                {t.logout}
+                <span className="hidden xs:inline">{t.logout}</span>
+                <span className="xs:hidden">🚪</span>
               </button>
             </div>
           </div>
         </div>
 
         {/* ============================================================ */}
-        {/* 2️⃣ FORMULAIRE DE DÉPÔT (juste en dessous de l'en-tête) */}
+        {/* AFFILIATION */}
+        {/* ============================================================ */}
+        {showAffiliate && (
+          <div className="mb-4 sm:mb-6">
+            <AffiliateDashboard lang={lang} />
+          </div>
+        )}
+
+        {/* ============================================================ */}
+        {/* 2️⃣ FORMULAIRE DE DÉPÔT */}
         {/* ============================================================ */}
         {showDepositForm && (
-          <div className="bg-white rounded-2xl shadow-md p-6 mb-6 border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t.newDeposit}</h3>
+          <div className="bg-white rounded-2xl shadow-md p-4 sm:p-6 mb-4 sm:mb-6 border border-gray-200">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">{t.newDeposit}</h3>
             
             {depositSuccess && (
-              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl mb-4 text-sm">
+              <div className="bg-green-50 border border-green-200 text-green-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl mb-3 sm:mb-4 text-xs sm:text-sm">
                 {t.depositSuccess}
               </div>
             )}
 
             {depositError && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4 text-sm">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl mb-3 sm:mb-4 text-xs sm:text-sm">
                 ❌ {depositError}
               </div>
             )}
 
-            <form onSubmit={handleDeposit} className="space-y-4">
+            <form onSubmit={handleDeposit} className="space-y-3 sm:space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">
                   {t.amountLabel} <span className="text-gray-400 font-normal">({t.minAmount} : {minDeposit})</span>
@@ -662,7 +760,7 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
                   min={minDeposit}
                   step="1"
                   placeholder={`Ex: ${minDeposit}`}
-                  className="w-full p-3 bg-gray-50 rounded-xl text-gray-800 border border-gray-200 focus:border-[#D91023] outline-none transition-all"
+                  className="w-full p-2.5 sm:p-3 bg-gray-50 rounded-xl text-gray-800 border border-gray-200 focus:border-[#6b2737] outline-none transition-all text-sm"
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}
                   required
@@ -672,29 +770,30 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">{t.paymentMethod}</label>
                 <select
-                  className="w-full p-3 bg-gray-50 rounded-xl text-gray-800 border border-gray-200 focus:border-[#D91023] outline-none transition-all"
+                  className="w-full p-2.5 sm:p-3 bg-gray-50 rounded-xl text-gray-800 border border-gray-200 focus:border-[#6b2737] outline-none transition-all text-sm"
                   value={depositMethod}
                   onChange={(e) => setDepositMethod(e.target.value)}
                 >
-                  <option value="bank_transfer">{t.bankTransfer}</option>
-                  <option value="yape">{t.yape}</option>
-                  <option value="plin">{t.plin}</option>
-                  <option value="paypal">{t.paypal}</option>
+                  {paymentMethods.map((method) => (
+                    <option key={method.value} value={method.value}>
+                      {method.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex gap-2 sm:gap-3">
                 <button
                   type="submit"
                   disabled={depositLoading}
-                  className="flex-1 bg-[#D91023] hover:bg-[#D91023]/90 text-white font-semibold py-3 rounded-xl disabled:opacity-50 transition-all shadow-sm"
+                  className="flex-1 bg-[#6b2737] hover:bg-[#6b2737]/90 text-white font-semibold py-2.5 sm:py-3 rounded-xl disabled:opacity-50 transition-all shadow-sm text-sm"
                 >
                   {depositLoading ? t.sending : t.confirmDeposit}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowDepositForm(false)}
-                  className="px-6 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-3 rounded-xl transition-all"
+                  className="px-4 sm:px-6 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-2.5 sm:py-3 rounded-xl transition-all text-sm"
                 >
                   {t.cancel}
                 </button>
@@ -709,13 +808,13 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
         {/* 3️⃣ NOTIFICATIONS ET MESSAGES */}
         {/* ============================================================ */}
         {returnNotification.show && (
-          <div className="bg-green-50 border border-green-200 rounded-2xl p-4 mb-6 shadow-sm animate-fade-in-up">
+          <div className="bg-green-50 border border-green-200 rounded-2xl p-3 sm:p-4 mb-4 sm:mb-6 shadow-sm animate-fade-in-up">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">💰</span>
+              <div className="flex items-center gap-2 sm:gap-3">
+                <span className="text-xl sm:text-2xl">💰</span>
                 <div>
-                  <p className="font-semibold text-green-700">{t.returnCredited}</p>
-                  <p className="text-sm text-green-600">
+                  <p className="font-semibold text-green-700 text-sm sm:text-base">{t.returnCredited}</p>
+                  <p className="text-xs sm:text-sm text-green-600">
                     +{returnNotification.amount.toFixed(2)} ({t.returnAmount})
                   </p>
                 </div>
@@ -731,14 +830,14 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
         )}
 
         {showWithdrawMessage && !withdrawStatus.allowed && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 mb-6 shadow-sm animate-fade-in-up">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">⏳</span>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-3 sm:p-4 mb-4 sm:mb-6 shadow-sm animate-fade-in-up">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <span className="text-xl sm:text-2xl">⏳</span>
               <div>
-                <p className="font-semibold text-yellow-700">
+                <p className="font-semibold text-yellow-700 text-sm sm:text-base">
                   {t.withdrawNotAllowed} {withdrawStatus.daysLeft} {t.withdrawNotAllowedDays}
                 </p>
-                <p className="text-sm text-yellow-600">{t.withdrawNotAllowedSub}</p>
+                <p className="text-xs sm:text-sm text-yellow-600">{t.withdrawNotAllowedSub}</p>
               </div>
             </div>
           </div>
@@ -747,52 +846,52 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
         {/* ============================================================ */}
         {/* 4️⃣ STATISTIQUES */}
         {/* ============================================================ */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
-          <div className="bg-white rounded-2xl shadow-sm p-5 border border-gray-100">
-            <p className="text-xs text-gray-400 uppercase tracking-wider">{t.balance}</p>
-            <p className="text-2xl font-bold text-gray-800 mt-1">{profile.balance.toFixed(2)}</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
+          <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-4 md:p-5 border border-gray-100">
+            <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">{t.balance}</p>
+            <p className="text-base sm:text-xl md:text-2xl font-bold text-gray-800 mt-0.5 sm:mt-1">{profile.balance.toFixed(2)}</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-sm p-5 border border-gray-100">
-            <p className="text-xs text-gray-400 uppercase tracking-wider">{t.pending}</p>
-            <p className="text-2xl font-bold text-yellow-600 mt-1">{pendingTotal.toFixed(2)}</p>
+          <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-4 md:p-5 border border-gray-100">
+            <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">{t.pending}</p>
+            <p className="text-base sm:text-xl md:text-2xl font-bold text-yellow-600 mt-0.5 sm:mt-1">{pendingTotal.toFixed(2)}</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-sm p-5 border border-gray-100">
-            <p className="text-xs text-gray-400 uppercase tracking-wider">{t.totalInvested}</p>
-            <p className="text-2xl font-bold text-blue-600 mt-1">{totalInvested.toFixed(2)}</p>
+          <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-4 md:p-5 border border-gray-100">
+            <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">{t.totalInvested}</p>
+            <p className="text-base sm:text-xl md:text-2xl font-bold text-[#6b2737] font-mono-data mt-0.5 sm:mt-1">{totalInvested.toFixed(2)}</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-sm p-5 border border-gray-100">
-            <p className="text-xs text-gray-400 uppercase tracking-wider">{t.totalWithdrawn}</p>
-            <p className="text-2xl font-bold text-red-500 mt-1">{totalWithdrawn.toFixed(2)}</p>
+          <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-4 md:p-5 border border-gray-100">
+            <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">{t.totalWithdrawn}</p>
+            <p className="text-base sm:text-xl md:text-2xl font-bold text-red-500 mt-0.5 sm:mt-1">{totalWithdrawn.toFixed(2)}</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-sm p-5 border border-gray-100">
-            <p className="text-xs text-gray-400 uppercase tracking-wider">{t.estimatedReturns}</p>
-            <p className="text-2xl font-bold text-purple-600 mt-1">{estimatedReturns.toFixed(2)}</p>
+          <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-4 md:p-5 border border-gray-100">
+            <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">{t.estimatedReturns}</p>
+            <p className="text-base sm:text-xl md:text-2xl font-bold text-purple-600 mt-0.5 sm:mt-1">{estimatedReturns.toFixed(2)}</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-sm p-5 border border-gray-100">
-            <p className="text-xs text-gray-400 uppercase tracking-wider">{t.totalReturns}</p>
-            <p className="text-2xl font-bold text-indigo-600 mt-1">{(profile.total_returns || 0).toFixed(2)}</p>
+          <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-4 md:p-5 border border-gray-100">
+            <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">{t.totalReturns}</p>
+            <p className="text-base sm:text-xl md:text-2xl font-bold text-[#2f6f4e] font-mono-data mt-0.5 sm:mt-1">{(profile.total_returns || 0).toFixed(2)}</p>
           </div>
         </div>
 
         {/* ============================================================ */}
         {/* 5️⃣ REVENU QUOTIDIEN */}
         {/* ============================================================ */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-4 mb-6 border border-blue-100">
+        <div className="bg-gradient-to-r from-[#f7f4ef] to-[#efe9df] rounded-2xl p-3 sm:p-4 mb-4 sm:mb-6 border border-[#e4ded3]">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs text-gray-400 uppercase tracking-wider">{t.dailyReturns}</p>
-              <p className="text-2xl font-bold text-blue-700">{dailyReturn.toFixed(2)}</p>
+              <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">{t.dailyReturns}</p>
+              <p className="text-base sm:text-xl md:text-2xl font-bold text-[#6b2737] font-mono-data">{dailyReturn.toFixed(2)}</p>
             </div>
-            <div className="text-3xl">📅</div>
+            <div className="text-2xl sm:text-3xl">📅</div>
           </div>
         </div>
 
         {/* ============================================================ */}
-        {/* 6️⃣ GRAPHIQUES AVEC RECHARTS (remplace le graphique simple) */}
+        {/* 6️⃣ GRAPHIQUES AVEC RECHARTS */}
         {/* ============================================================ */}
         {user && (
-          <div className="mb-6">
-            <h3 className="text-sm font-semibold text-gray-700 mb-4">{t.charts}</h3>
+          <div className="mb-4 sm:mb-6">
+            <h3 className="text-xs sm:text-sm font-semibold text-gray-700 mb-2 sm:mb-4">{t.charts}</h3>
             <DashboardCharts userId={user.id} lang={lang} />
           </div>
         )}
@@ -801,22 +900,22 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
         {/* 7️⃣ FORMULAIRE DE RETRAIT */}
         {/* ============================================================ */}
         {showWithdrawForm && withdrawStatus.allowed && (
-          <div className="bg-white rounded-2xl shadow-md p-6 mb-6 border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t.newWithdraw}</h3>
+          <div className="bg-white rounded-2xl shadow-md p-4 sm:p-6 mb-4 sm:mb-6 border border-gray-200">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">{t.newWithdraw}</h3>
             
             {withdrawSuccess && (
-              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl mb-4 text-sm">
+              <div className="bg-green-50 border border-green-200 text-green-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl mb-3 sm:mb-4 text-xs sm:text-sm">
                 {t.withdrawSuccess}
               </div>
             )}
 
             {withdrawError && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4 text-sm">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl mb-3 sm:mb-4 text-xs sm:text-sm">
                 ❌ {withdrawError}
               </div>
             )}
 
-            <form onSubmit={handleWithdraw} className="space-y-4">
+            <form onSubmit={handleWithdraw} className="space-y-3 sm:space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">
                   {t.amountLabel} <span className="text-gray-400 font-normal">({t.maxAmount} : {profile.balance.toFixed(2)})</span>
@@ -827,7 +926,7 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
                   max={profile.balance}
                   step="1"
                   placeholder={`Ex: ${Math.min(100, profile.balance)}`}
-                  className="w-full p-3 bg-gray-50 rounded-xl text-gray-800 border border-gray-200 focus:border-blue-500 outline-none transition-all"
+                  className="w-full p-2.5 sm:p-3 bg-gray-50 rounded-xl text-gray-800 border border-gray-200 focus:border-[#6b2737] outline-none transition-all text-sm"
                   value={withdrawAmount}
                   onChange={(e) => setWithdrawAmount(e.target.value)}
                   required
@@ -837,29 +936,30 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">{t.paymentMethod}</label>
                 <select
-                  className="w-full p-3 bg-gray-50 rounded-xl text-gray-800 border border-gray-200 focus:border-blue-500 outline-none transition-all"
+                  className="w-full p-2.5 sm:p-3 bg-gray-50 rounded-xl text-gray-800 border border-gray-200 focus:border-[#6b2737] outline-none transition-all text-sm"
                   value={withdrawMethod}
                   onChange={(e) => setWithdrawMethod(e.target.value)}
                 >
-                  <option value="bank_transfer">{t.bankTransfer}</option>
-                  <option value="yape">{t.yape}</option>
-                  <option value="plin">{t.plin}</option>
-                  <option value="paypal">{t.paypal}</option>
+                  {paymentMethods.map((method) => (
+                    <option key={method.value} value={method.value}>
+                      {method.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex gap-2 sm:gap-3">
                 <button
                   type="submit"
                   disabled={withdrawLoading}
-                  className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl disabled:opacity-50 transition-all shadow-sm"
+                  className="flex-1 bg-[#6b2737] hover:bg-[#4e1d29] text-white font-semibold py-2.5 sm:py-3 rounded-xl disabled:opacity-50 transition-all shadow-sm text-sm"
                 >
                   {withdrawLoading ? t.sending : t.confirmWithdraw}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowWithdrawForm(false)}
-                  className="px-6 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-3 rounded-xl transition-all"
+                  className="px-4 sm:px-6 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-2.5 sm:py-3 rounded-xl transition-all text-sm"
                 >
                   {t.cancel}
                 </button>
@@ -873,46 +973,46 @@ const UserDashboard = ({ onClose, lang = 'fr' }: UserDashboardProps) => {
         {/* ============================================================ */}
         {/* 8️⃣ HISTORIQUE */}
         {/* ============================================================ */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">{t.history}</h2>
+        <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 border border-gray-100">
+          <h2 className="text-xs sm:text-sm font-semibold text-gray-700 mb-3 sm:mb-4">{t.history}</h2>
           
           {transactions.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-400 text-sm">{t.noTransactions}</p>
-              <p className="text-gray-400 text-xs mt-1">{t.startInvesting}</p>
+            <div className="text-center py-6 sm:py-8">
+              <p className="text-gray-400 text-xs sm:text-sm">{t.noTransactions}</p>
+              <p className="text-gray-400 text-[10px] sm:text-xs mt-1">{t.startInvesting}</p>
               <button
                 onClick={() => setShowDepositForm(true)}
-                className="mt-4 bg-[#D91023] hover:bg-[#D91023]/90 text-white font-semibold px-6 py-2 rounded-xl transition-all text-sm"
+                className="mt-3 sm:mt-4 bg-[#6b2737] hover:bg-[#6b2737]/90 text-white font-semibold px-4 sm:px-6 py-1.5 sm:py-2 rounded-xl transition-all text-xs sm:text-sm"
               >
                 + {t.deposit}
               </button>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+            <div className="overflow-x-auto -mx-4 sm:mx-0">
+              <table className="w-full text-xs sm:text-sm">
                 <thead>
                   <tr className="border-b border-gray-100">
-                    <th className="text-left py-2 text-gray-400 font-medium">{t.reference}</th>
-                    <th className="text-left py-2 text-gray-400 font-medium">{t.type}</th>
-                    <th className="text-left py-2 text-gray-400 font-medium">{t.amount}</th>
-                    <th className="text-left py-2 text-gray-400 font-medium">{t.method}</th>
-                    <th className="text-left py-2 text-gray-400 font-medium">{t.status}</th>
-                    <th className="text-left py-2 text-gray-400 font-medium">{t.date}</th>
+                    <th className="text-left py-2 px-2 sm:px-0 text-gray-400 font-medium">{t.reference}</th>
+                    <th className="text-left py-2 px-2 sm:px-0 text-gray-400 font-medium">{t.type}</th>
+                    <th className="text-left py-2 px-2 sm:px-0 text-gray-400 font-medium">{t.amount}</th>
+                    <th className="hidden sm:table-cell text-left py-2 px-2 sm:px-0 text-gray-400 font-medium">{t.method}</th>
+                    <th className="text-left py-2 px-2 sm:px-0 text-gray-400 font-medium">{t.status}</th>
+                    <th className="text-left py-2 px-2 sm:px-0 text-gray-400 font-medium">{t.date}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {transactions.map((transaction) => (
                     <tr key={transaction.id} className="border-b border-gray-50 hover:bg-gray-50 transition-all">
-                      <td className="py-2 text-gray-600 font-mono text-xs">{transaction.reference}</td>
-                      <td className="py-2 text-gray-600 text-xs">{getTypeText(transaction.transaction_type)}</td>
-                      <td className="py-2 text-gray-800 font-semibold">{transaction.amount.toFixed(2)}</td>
-                      <td className="py-2 text-gray-500 text-xs">{transaction.payment_method}</td>
-                      <td className="py-2">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusBadge(transaction.status)}`}>
+                      <td className="py-2 px-2 sm:px-0 text-gray-600 font-mono text-[10px] sm:text-xs truncate max-w-[60px] sm:max-w-none">{transaction.reference}</td>
+                      <td className="py-2 px-2 sm:px-0 text-gray-600 text-[10px] sm:text-xs">{getTypeText(transaction.transaction_type)}</td>
+                      <td className="py-2 px-2 sm:px-0 text-gray-800 font-semibold text-xs sm:text-sm">{transaction.amount.toFixed(2)}</td>
+                      <td className="hidden sm:table-cell py-2 px-2 sm:px-0 text-gray-500 text-xs">{transaction.payment_method}</td>
+                      <td className="py-2 px-2 sm:px-0">
+                        <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium ${getStatusBadge(transaction.status)}`}>
                           {getStatusText(transaction.status)}
                         </span>
                       </td>
-                      <td className="py-2 text-gray-400 text-xs">
+                      <td className="py-2 px-2 sm:px-0 text-gray-400 text-[10px] sm:text-xs">
                         {new Date(transaction.created_at).toLocaleDateString()}
                       </td>
                     </tr>

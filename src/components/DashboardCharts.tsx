@@ -24,7 +24,7 @@ interface DashboardChartsProps {
   lang?: Lang;
 }
 
-const COLORS = ['#D91023', '#fcd116', '#009e49', '#1a3c6e', '#CE1126', '#006341'];
+const COLORS = ['#6b2737', '#c9a227', '#009e49', '#6b2737', '#CE1126', '#2f6f4e'];
 
 const DashboardCharts = ({ userId, lang = 'fr' }: DashboardChartsProps) => {
   const [balanceHistory, setBalanceHistory] = useState<any[]>([]);
@@ -247,12 +247,12 @@ const DashboardCharts = ({ userId, lang = 'fr' }: DashboardChartsProps) => {
           <AreaChart data={balanceHistory}>
             <defs>
               <linearGradient id="balanceGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#D91023" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#D91023" stopOpacity={0} />
+                <stop offset="5%" stopColor="#6b2737" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#6b2737" stopOpacity={0} />
               </linearGradient>
               <linearGradient id="gainsGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#fcd116" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#fcd116" stopOpacity={0} />
+                <stop offset="5%" stopColor="#c9a227" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#c9a227" stopOpacity={0} />
               </linearGradient>
             </defs>
             <XAxis dataKey="day" tick={{ fontSize: 11, fill: '#9CA3AF' }} />
@@ -271,7 +271,7 @@ const DashboardCharts = ({ userId, lang = 'fr' }: DashboardChartsProps) => {
             <Area
               type="monotone"
               dataKey="balance"
-              stroke="#D91023"
+              stroke="#6b2737"
               strokeWidth={2}
               fill="url(#balanceGradient)"
               name={t.balance}
@@ -279,7 +279,7 @@ const DashboardCharts = ({ userId, lang = 'fr' }: DashboardChartsProps) => {
             <Area
               type="monotone"
               dataKey="gains"
-              stroke="#fcd116"
+              stroke="#c9a227"
               strokeWidth={2}
               fill="url(#gainsGradient)"
               name={t.gains}

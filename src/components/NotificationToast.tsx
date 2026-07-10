@@ -28,24 +28,24 @@ const NotificationToast = ({ country, lang = 'fr' }: NotificationToastProps) => 
     switch (country.code) {
       case 'pe':
         return {
-          iconGradient: 'from-[#D91023] to-[#fcd116]',
-          checkColor: 'text-[#D91023]',
+          iconGradient: 'from-[#6b2737] to-[#c9a227]',
+          checkColor: 'text-[#6b2737]',
           textColor: 'text-gray-900',
           locationColor: 'text-gray-600',
-          timeColor: 'text-[#D91023]',
+          timeColor: 'text-[#6b2737]',
         };
       case 'mx':
         return {
-          iconGradient: 'from-[#006341] to-[#CE1126]',
-          checkColor: 'text-[#006341]',
+          iconGradient: 'from-[#2f6f4e] to-[#CE1126]',
+          checkColor: 'text-[#2f6f4e]',
           textColor: 'text-gray-900',
           locationColor: 'text-gray-600',
-          timeColor: 'text-[#006341]',
+          timeColor: 'text-[#2f6f4e]',
         };
       default:
         return {
-          iconGradient: 'from-[#fcd116] to-[#ef2b2d]',
-          checkColor: 'text-[#fcd116]',
+          iconGradient: 'from-[#c9a227] to-[#ef2b2d]',
+          checkColor: 'text-[#c9a227]',
           textColor: 'text-gray-900',
           locationColor: 'text-gray-600',
           timeColor: 'text-green-600',

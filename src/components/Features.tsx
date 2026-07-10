@@ -7,76 +7,94 @@ interface FeaturesProps {
 }
 
 const Features = ({ t, country }: FeaturesProps) => {
+  // 👈 Vérification de sécurité : si country est undefined, utiliser des valeurs par défaut
+  if (!country) {
+    return (
+      <div className="mb-16 text-center py-12">
+        <p className="text-gray-500">Chargement des fonctionnalités...</p>
+      </div>
+    );
+  }
+
   // Couleurs personnalisées selon le pays
   const getColors = () => {
     switch (country.code) {
       case 'pe':
         return {
-          titleGradient: 'from-[#D91023] to-[#fcd116]',
+          titleGradient: 'from-[#6b2737] to-[#c9a227]',
           featureGradients: [
-            'from-[#D91023]/20 to-[#8B0000]/10',
-            'from-[#1a3c6e]/20 to-[#0e2a4f]/10',
-            'from-[#fcd116]/20 to-[#f39c12]/10',
-            'from-[#D91023]/20 to-[#fcd116]/10',
+            'from-[#6b2737]/20 to-[#8B0000]/10',
+            'from-[#6b2737]/20 to-[#0e2a4f]/10',
+            'from-[#c9a227]/20 to-[#f39c12]/10',
+            'from-[#6b2737]/20 to-[#c9a227]/10',
           ],
           borderColors: [
-            'border-[#D91023]/30',
-            'border-[#1a3c6e]/30',
-            'border-[#fcd116]/30',
-            'border-[#D91023]/30',
+            'border-[#6b2737]/30',
+            'border-[#6b2737]/30',
+            'border-[#c9a227]/30',
+            'border-[#6b2737]/30',
           ],
-          hoverBorder: 'hover:border-[#D91023]',
-          hoverText: 'group-hover:text-[#D91023]',
-          lineGradient: 'from-[#D91023] to-[#fcd116]',
-          glowColor: 'from-[#D91023]/30',
-          shadowColor: 'shadow-[#D91023]/20',
+          hoverBorder: 'hover:border-[#6b2737]',
+          hoverText: 'group-hover:text-[#6b2737]',
+          lineGradient: 'from-[#6b2737] to-[#c9a227]',
+          glowColor: 'from-[#6b2737]/30',
+          shadowColor: 'shadow-[#6b2737]/20',
         };
       case 'mx':
         return {
-          titleGradient: 'from-[#006341] to-[#CE1126]',
+          titleGradient: 'from-[#2f6f4e] to-[#CE1126]',
           featureGradients: [
-            'from-[#006341]/20 to-[#003d2b]/10',
-            'from-[#1a3c6e]/20 to-[#0e2a4f]/10',
+            'from-[#2f6f4e]/20 to-[#003d2b]/10',
+            'from-[#6b2737]/20 to-[#0e2a4f]/10',
             'from-[#CE1126]/20 to-[#8B0000]/10',
-            'from-[#006341]/20 to-[#CE1126]/10',
+            'from-[#2f6f4e]/20 to-[#CE1126]/10',
           ],
           borderColors: [
-            'border-[#006341]/30',
-            'border-[#1a3c6e]/30',
+            'border-[#2f6f4e]/30',
+            'border-[#6b2737]/30',
             'border-[#CE1126]/30',
-            'border-[#006341]/30',
+            'border-[#2f6f4e]/30',
           ],
-          hoverBorder: 'hover:border-[#006341]',
-          hoverText: 'group-hover:text-[#006341]',
-          lineGradient: 'from-[#006341] to-[#CE1126]',
-          glowColor: 'from-[#006341]/30',
-          shadowColor: 'shadow-[#006341]/20',
+          hoverBorder: 'hover:border-[#2f6f4e]',
+          hoverText: 'group-hover:text-[#2f6f4e]',
+          lineGradient: 'from-[#2f6f4e] to-[#CE1126]',
+          glowColor: 'from-[#2f6f4e]/30',
+          shadowColor: 'shadow-[#2f6f4e]/20',
         };
       default:
         return {
-          titleGradient: 'from-[#fcd116] to-[#ef2b2d]',
+          titleGradient: 'from-[#c9a227] to-[#ef2b2d]',
           featureGradients: [
             'from-[#ef2b2d]/20 to-[#c0392b]/10',
-            'from-[#1a3c6e]/20 to-[#0e2a4f]/10',
-            'from-[#fcd116]/20 to-[#f39c12]/10',
+            'from-[#6b2737]/20 to-[#0e2a4f]/10',
+            'from-[#c9a227]/20 to-[#f39c12]/10',
             'from-[#009e49]/20 to-[#27ae60]/10',
           ],
           borderColors: [
             'border-[#ef2b2d]/30',
-            'border-[#1a3c6e]/30',
-            'border-[#fcd116]/30',
+            'border-[#6b2737]/30',
+            'border-[#c9a227]/30',
             'border-[#009e49]/30',
           ],
-          hoverBorder: 'hover:border-[#fcd116]',
-          hoverText: 'group-hover:text-[#fcd116]',
-          lineGradient: 'from-[#fcd116] to-[#ef2b2d]',
-          glowColor: 'from-[#fcd116]/30',
-          shadowColor: 'shadow-[#fcd116]/20',
+          hoverBorder: 'hover:border-[#c9a227]',
+          hoverText: 'group-hover:text-[#c9a227]',
+          lineGradient: 'from-[#c9a227] to-[#ef2b2d]',
+          glowColor: 'from-[#c9a227]/30',
+          shadowColor: 'shadow-[#c9a227]/20',
         };
     }
   };
 
   const colors = getColors();
+
+  // 👈 Vérification supplémentaire pour t.features
+  if (!t || !t.features || !t.features.items) {
+    return (
+      <div className="mb-16 text-center py-12">
+        <p className="text-gray-500">Chargement des fonctionnalités...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="mb-16">

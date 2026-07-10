@@ -50,7 +50,7 @@ const AdminLogin = ({ onLogin, onClose }: AdminLoginProps) => {
               placeholder="Mot de passe administrateur"
               className={`w-full p-4 bg-gray-50 rounded-2xl text-gray-800 placeholder-gray-400 border-2 ${
                 error ? 'border-red-500' : 'border-gray-200'
-              } focus:border-[#D91023] outline-none transition-all`}
+              } focus:border-[#6b2737] outline-none transition-all`}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoFocus
@@ -64,7 +64,7 @@ const AdminLogin = ({ onLogin, onClose }: AdminLoginProps) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#D91023] hover:bg-[#D91023]/80 text-white font-bold py-4 rounded-2xl transition-all disabled:opacity-50"
+            className="w-full bg-[#6b2737] hover:bg-[#6b2737]/80 text-white font-bold py-4 rounded-2xl transition-all disabled:opacity-50"
           >
             {loading ? '⏳ Vérification...' : '🔓 Accéder à l\'administration'}
           </button>
