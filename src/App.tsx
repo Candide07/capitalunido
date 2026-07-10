@@ -49,9 +49,15 @@ function AppContent() {
 
   const bgGradient = getBackground();
 
+  // 👈 CORRECTION : Garder le paramètre ref dans l'URL
   const navigateTo = (page: string) => {
     setCurrentPage(page);
-    window.history.pushState(null, '', `/${page}`);
+    
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    const url = ref ? `/${page}?ref=${ref}` : `/${page}`;
+    
+    window.history.pushState(null, '', url);
   };
 
   useEffect(() => {
@@ -98,6 +104,9 @@ function AppContent() {
   if (currentPage === 'register') {
     const params = new URLSearchParams(window.location.search);
     const refCode = params.get('ref') || undefined;
+    
+    console.log('🔍 App.tsx - refCode:', refCode);
+    console.log('🔍 App.tsx - URL:', window.location.href);
     
     return <Register 
       onClose={() => navigateTo('home')} 

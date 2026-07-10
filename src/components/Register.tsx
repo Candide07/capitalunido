@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Lang } from '../data/translations';
 
@@ -21,13 +21,24 @@ const Register = ({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
-  const [referralInput, setReferralInput] = useState(''); // 👈 NOUVEAU
+  const [referralInput, setReferralInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ phone?: string; email?: string }>({});
 
-  // 👈 Validation stricte : évite les numéros/emails mal saisis ou incomplets
+  // 👈 LOG POUR VOIR SI LE CODE EST REÇU
+  console.log('🔍 referralCode reçu dans Register:', referralCode);
+
+  // 👈 PRÉ-REMPLIR LE CHAMP AVEC LE CODE DE L'URL
+  useEffect(() => {
+    if (referralCode) {
+      setReferralInput(referralCode);
+      console.log('✅ Code pré-rempli:', referralCode);
+    }
+  }, [referralCode]);
+
+  // 👈 Validation stricte
   const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const PHONE_REGEX = /^\+?[0-9\s-]{8,15}$/;
 
@@ -124,7 +135,7 @@ const Register = ({
     setFieldErrors(newFieldErrors);
 
     if (Object.keys(newFieldErrors).length > 0) {
-      return; // 👈 On bloque l'envoi tant que phone/email ne sont pas valides
+      return;
     }
 
     if (password !== confirmPassword) {
@@ -135,7 +146,6 @@ const Register = ({
     setLoading(true);
     setError(null);
 
-    // 👈 Si l'utilisateur a saisi un code, il prime sur le code de l'URL
     const finalReferralCode = referralInput || referralCode;
 
     const { error } = await signUp(cleanEmail, password, fullName.trim(), cleanPhone, finalReferralCode);
@@ -155,14 +165,12 @@ const Register = ({
 
   return (
     <div className="min-h-screen bg-[#f7f4ef] flex items-center justify-center p-3 sm:p-4 relative">
-      {/* Fond amélioré */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-subtle" />
         <div className="absolute inset-0 bg-pattern-dots" />
       </div>
 
       <div className="max-w-md w-full bg-white/90 backdrop-blur-xl border border-gray-200 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl animate-fadeIn">
-        {/* Boutons */}
         <div className="flex justify-between items-start mb-4">
           <button 
             onClick={onClose} 
@@ -255,7 +263,7 @@ const Register = ({
             />
           </div>
 
-          {/* 👈 NOUVEAU CHAMP : Code de parrainage */}
+          {/* Champ Code de parrainage */}
           <div>
             <input
               type="text"
